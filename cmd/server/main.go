@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/je4/basel-collections/service"
 	lm "github.com/je4/utils/v2/pkg/logger"
 	"github.com/je4/utils/v2/pkg/ssh"
 	"io"
@@ -16,12 +17,12 @@ import (
 )
 
 func main() {
-	cfgFile := flag.String("cfg", "/etc/fdp.toml", "locations of config file")
+	cfgFile := flag.String("cfg", "/etc/basel-collections.toml", "locations of config file")
 	flag.Parse()
 	config := LoadConfig(*cfgFile)
 
 	// create logger instance
-	logger, lf := lm.CreateLogger("FAIRService", config.Logfile, nil, config.Loglevel, config.Logformat)
+	logger, lf := lm.CreateLogger("Basel-Collections", config.Logfile, nil, config.Loglevel, config.Logformat)
 	defer lf.Close()
 
 	var tunnels []*ssh.SSHtunnel
@@ -99,7 +100,7 @@ func main() {
 		defer f.Close()
 		accessLog = f
 	}
-	srv, err := service.NewServer(config.ServiceName, config.Addr, config.UserName, config.Password, logger, fair, accessLog, config.JWTKey, config.JWTAlg, config.LinkTokenExp.Duration)
+	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, config.ServiceName, logger, accessLog)
 	if err != nil {
 		logger.Panicf("cannot initialize server: %v", err)
 	}
