@@ -18,7 +18,6 @@ require (
 require (
 	github.com/blend/go-sdk v1.20211025.3 // indirect
 	github.com/felixge/httpsnoop v1.0.1 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/machinebox/progress v0.2.0 // indirect
 	github.com/pkg/sftp v1.13.4 // indirect

@@ -21,18 +21,17 @@ import (
 )
 
 type Server struct {
-	service        string
-	host, port     string
-	addrExt        string
-	name, password string
-	srv            *http.Server
-	log            *logging.Logger
-	accessLog      io.Writer
-	templates      map[string]*template.Template
-	cache          gcache.Cache
+	service    string
+	host, port string
+	addrExt    string
+	srv        *http.Server
+	log        *logging.Logger
+	accessLog  io.Writer
+	templates  map[string]*template.Template
+	cache      gcache.Cache
 }
 
-func NewServer(service, addr, addrExt, name, password string, log *logging.Logger, accessLog io.Writer) (*Server, error) {
+func NewServer(service, addr, addrExt string, log *logging.Logger, accessLog io.Writer) (*Server, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot split address %s", addr)
@@ -49,8 +48,6 @@ func NewServer(service, addr, addrExt, name, password string, log *logging.Logge
 		host:      host,
 		port:      port,
 		addrExt:   addrExt,
-		name:      name,
-		password:  password,
 		log:       log,
 		accessLog: accessLog,
 		templates: map[string]*template.Template{},
@@ -85,7 +82,7 @@ func (s *Server) ListenAndServe(cert, key string) (err error) {
 				fullPrefix := fmt.Sprintf("/%s", prefix)
 				p := strings.TrimPrefix(r.URL.Path, fullPrefix)
 				rp := strings.TrimPrefix(r.URL.RawPath, fullPrefix)
-				if len(p) < len(r.URL.Path) && (r.URL.RawPath == "" || len(rp) < len(r.URL.RawPath)) {
+				if len(p) <= len(r.URL.Path) && (r.URL.RawPath == "" || len(rp) < len(r.URL.RawPath)) {
 					r2 := new(http.Request)
 					*r2 = *r
 					r2.URL = new(url.URL)
@@ -99,10 +96,12 @@ func (s *Server) ListenAndServe(cert, key string) (err error) {
 				}
 			})
 
-		}("/static", httpStaticServer),
+		}("static", httpStaticServer),
 		// http.StripPrefix("/static", httpStaticServer)
 		),
 	).Methods("GET")
+
+	router.HandleFunc("/", s.rootHandler).Methods("GET")
 
 	loggedRouter := handlers.CombinedLoggingHandler(s.accessLog, handlers.ProxyHeaders(router))
 	addr := net.JoinHostPort(s.host, s.port)
@@ -118,10 +117,13 @@ func (s *Server) ListenAndServe(cert, key string) (err error) {
 			return errors.Wrap(err, "cannot generate default certificate")
 		}
 		s.srv.TLSConfig = &tls.Config{Certificates: []tls.Certificate{*cert}}
+		s.log.Infof("starting server at https://%s:%s - %s", s.host, s.port, s.addrExt)
 		return s.srv.ListenAndServeTLS("", "")
 	} else if cert != "" && key != "" {
+		s.log.Infof("starting server at https://%s:%s - %s", s.host, s.port, s.addrExt)
 		return s.srv.ListenAndServeTLS(cert, key)
 	} else {
+		s.log.Infof("starting server at http://%s:%s - %s", s.host, s.port, s.addrExt)
 		return s.srv.ListenAndServe()
 	}
 }

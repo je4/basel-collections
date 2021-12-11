@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/je4/basel-collections/service"
+	"github.com/je4/basel-collections/v2/service"
 	lm "github.com/je4/utils/v2/pkg/logger"
 	"github.com/je4/utils/v2/pkg/ssh"
 	"io"
@@ -65,12 +65,13 @@ func main() {
 	}
 	defer func() {
 		for _, t := range tunnels {
+			logger.Infof("closing ssh tunnel")
 			t.Close()
 		}
 	}()
 	// if tunnels are made, wait until connection is established
 	if len(config.Tunnel) > 0 {
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 
 	// get database connection handle
@@ -100,7 +101,7 @@ func main() {
 		defer f.Close()
 		accessLog = f
 	}
-	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, config.ServiceName, logger, accessLog)
+	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, logger, accessLog)
 	if err != nil {
 		logger.Panicf("cannot initialize server: %v", err)
 	}
