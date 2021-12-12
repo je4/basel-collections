@@ -41,6 +41,12 @@ type SSHTunnel struct {
 	Forward    map[string]Forward `toml:"forward"`
 }
 
+type Directus struct {
+	BaseUrl   string   `toml:"baseurl"`
+	Token     string   `toml:"token"`
+	CacheTime duration `toml:"cachetime"`
+}
+
 type Config struct {
 	ServiceName string `toml:"servicename"`
 	Logfile     string `toml:"logfile"`
@@ -53,8 +59,9 @@ type Config struct {
 	KeyPEM      string `toml:"keypem"`
 	//	JWTKey       string               `toml:"jwtkey"`
 	//	JWTAlg       []string             `toml:"jwtalg"`
-	DB     CfgDatabase          `toml:"database"`
-	Tunnel map[string]SSHTunnel `toml:"tunnel"`
+	DB       CfgDatabase          `toml:"database"`
+	Directus Directus             `toml:"directus"`
+	Tunnel   map[string]SSHTunnel `toml:"tunnel"`
 }
 
 func LoadConfig(filepath string) Config {

@@ -1,0 +1,23 @@
+{
+  "1": {
+    "vertical-align": "bottom"
+  },
+  "2": {
+    "font-style": "italic",
+    "vertical-align": "bottom"
+  },
+  "3": {
+    "vertical-align": "top"
+  },
+  "4": {
+    "vertical-align": "top"
+  },
+  "5": {
+    "font-style": "italic",
+    "vertical-align": "top"
+  },
+  "6": {
+    "font-style": "italic",
+    "vertical-align": "bottom"
+  }
+}

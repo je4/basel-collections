@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"crypto/tls"
+	"database/sql"
 	"fmt"
 	"github.com/bluele/gcache"
 	"github.com/gorilla/handlers"
@@ -29,9 +30,10 @@ type Server struct {
 	accessLog  io.Writer
 	templates  map[string]*template.Template
 	cache      gcache.Cache
+	db         *sql.DB
 }
 
-func NewServer(service, addr, addrExt string, log *logging.Logger, accessLog io.Writer) (*Server, error) {
+func NewServer(service, addr, addrExt string, db *sql.DB, log *logging.Logger, accessLog io.Writer) (*Server, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot split address %s", addr)
@@ -48,6 +50,7 @@ func NewServer(service, addr, addrExt string, log *logging.Logger, accessLog io.
 		host:      host,
 		port:      port,
 		addrExt:   addrExt,
+		db:        db,
 		log:       log,
 		accessLog: accessLog,
 		templates: map[string]*template.Template{},
