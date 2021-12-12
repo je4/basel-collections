@@ -16,11 +16,11 @@ require (
 )
 
 require (
-	github.com/blend/go-sdk v1.20211025.3 // indirect
-	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/blend/go-sdk v1.20211204.3 // indirect
+	github.com/felixge/httpsnoop v1.0.2 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/machinebox/progress v0.2.0 // indirect
 	github.com/pkg/sftp v1.13.4 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/sys v0.0.0-20211102061401-a2f17f7b995c // indirect
+	golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b // indirect
+	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
 )

@@ -1,5 +1,7 @@
 package service
 
+import "github.com/je4/basel-collections/v2/directus"
+
 const darkorchid = "#7b458d"
 const darkorchid1 = "#69008B"
 const darkgoldenrod = "#F29F05"
@@ -66,7 +68,7 @@ var GRIDLARGE = []Grid{
 	{Id: 0, Left: 9, Cols: 1, Top: 10, Rows: 3, Type: blank, Scheme: SCHEMES[3], VAlign: bottom}, // 20
 }
 
-func buildGrid(template []Grid, collections []Collection) ([]Grid, int64) {
+func buildGrid(template []Grid, collections []directus.Collection) ([]Grid, int64) {
 	var grid = []Grid{}
 
 	var entries int64 = int64(len(collections))

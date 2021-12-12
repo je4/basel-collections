@@ -7,34 +7,83 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
+	"sort"
 	"time"
 )
 
-type Collection struct {
-	Id          int64    `json:"id,omitempty"`
-	Status      string   `json:"status,omitempty"`
-	Sort        int64    `json:"sort,omitempty"`
-	DateCreated string   `json:"date_created,omitempty"`
-	DateUpdated string   `json:"date_updated,omitempty"`
-	Title       string   `json:"title,omitempty"`
-	Image       string   `json:"image,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Institution int64    `json:"institution,omitempty"`
-	Url         string   `json:"url,omitempty"`
-	Hinweis     string   `json:"hinweis,omitempty"`
-	Tags        []string `json:"tags,omitempty"`
+type Collection_Tag struct {
+	Id            int64 `json:"id"`
+	CollectionsId int64 `json:"collections_id"`
+	TagsId        int64 `json:"tags_id"`
 }
 
-func (d *Directus) GetCollections() (map[int64]Collection, error) {
-	d.collectionsMutex.Lock()
-	defer d.collectionsMutex.Unlock()
+type Collection struct {
+	dir         *Directus        `json:"-"`
+	Id          int64            `json:"id,omitempty"`
+	Status      string           `json:"status,omitempty"`
+	Sort        int64            `json:"sort,omitempty"`
+	DateCreated string           `json:"date_created,omitempty"`
+	DateUpdated string           `json:"date_updated,omitempty"`
+	Title       string           `json:"title,omitempty"`
+	Image       string           `json:"image,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Institution int64            `json:"institution,omitempty"`
+	Url         string           `json:"url,omitempty"`
+	Hinweis     string           `json:"hinweis,omitempty"`
+	Tags        []Collection_Tag `json:"tags,omitempty"`
+}
+
+type sortCollectionsBySort []*Collection
+
+func (sc sortCollectionsBySort) Len() int           { return len(sc) }
+func (sc sortCollectionsBySort) Swap(i, j int)      { sc[i], sc[j] = sc[j], sc[i] }
+func (sc sortCollectionsBySort) Less(i, j int) bool { return sc[i].Sort < sc[j].Sort }
+
+type CollectionsResult struct {
+	Data   []*Collection `json:"data,omitempty"`
+	Errors []*Error      `json:"errors"`
+}
+
+func (c *Collection) GetTags() ([]*Tag, error) {
+	list := []int64{}
+	for _, ct := range c.Tags {
+		if ct.TagsId == 0 {
+			continue
+		}
+		list = append(list, ct.TagsId)
+	}
+	return c.dir.GetTagList(list)
+}
+
+func (d *Directus) GetCollections() ([]*Collection, error) {
+	if err := d.loadCollections(); err != nil {
+		return nil, err
+	}
+	return d.collections, nil
+}
+
+func (d *Directus) GetCollection(id int64) (*Collection, error) {
+	if err := d.loadCollections(); err != nil {
+		return nil, err
+	}
+	for _, coll := range d.collections {
+		if coll.Id == id {
+			return coll, nil
+		}
+	}
+	return nil, errors.New(fmt.Sprintf("collection #%v not found", id))
+}
+
+func (d *Directus) loadCollections() error {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 
 	if d.collections == nil || time.Now().Add(-d.cacheTime).After(d.lastAccess) {
 		d.collections = nil
-		urlStr := fmt.Sprintf("%s/items/collections?limit=-1", d.baseurl)
+		urlStr := fmt.Sprintf("%s/items/collections?limit=-1&fields=*,tags.*", d.baseurl)
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {
-			return nil, errors.Wrapf(err, "cannot create request %s", urlStr)
+			return errors.Wrapf(err, "cannot create request %s", urlStr)
 		}
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", d.token))
 		client := http.Client{
@@ -45,31 +94,29 @@ func (d *Directus) GetCollections() (map[int64]Collection, error) {
 		}
 		resp, err := client.Do(req)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error executing %s", urlStr)
+			return errors.Wrapf(err, "error executing %s", urlStr)
 		}
 		data, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return nil, errors.Wrapf(err, "cannot read result of %s", urlStr)
+			return errors.Wrapf(err, "cannot read result of %s", urlStr)
 		}
-		collections := []Collection{}
+		collections := CollectionsResult{}
 		if err := json.Unmarshal(data, &collections); err != nil {
 			d.collections = nil
-			errorResult := ErrorResult{}
-			if err := json.Unmarshal(data, &errorResult); err != nil {
-				return nil, errors.Wrapf(err, "cannot parse result: %s", string(data))
-			}
-			if len(errorResult.Errors) > 0 {
-				error := errorResult.Errors[0]
-				return nil, errors.New(fmt.Sprintf("%s", error.Message))
-			} else {
-				return nil, errors.New(fmt.Sprintf("unknown error in result: %s", string(data)))
-			}
+			return errors.Wrapf(err, "cannot parse result: %s", string(data))
 		}
-		d.collections = map[int64]Collection{}
-		for _, coll := range collections {
-			d.collections[coll.Id] = coll
+		if len(collections.Errors) > 0 {
+			d.collections = nil
+			error := collections.Errors[0]
+			return errors.New(fmt.Sprintf("%s", error.Message))
 		}
+		d.collections = []*Collection{}
+		for _, coll := range collections.Data {
+			coll.dir = d
+			d.collections = append(d.collections, coll)
+		}
+		sort.Sort(sortCollectionsBySort(d.collections))
 		d.lastAccess = time.Now()
 	}
-	return d.collections, nil
+	return nil
 }

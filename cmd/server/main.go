@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/je4/basel-collections/v2/directus"
 	"github.com/je4/basel-collections/v2/service"
 	lm "github.com/je4/utils/v2/pkg/logger"
 	"github.com/je4/utils/v2/pkg/ssh"
@@ -24,6 +24,8 @@ func main() {
 	// create logger instance
 	logger, lf := lm.CreateLogger("Basel-Collections", config.Logfile, nil, config.Loglevel, config.Logformat)
 	defer lf.Close()
+
+	var err error
 
 	var tunnels []*ssh.SSHtunnel
 	for name, tunnel := range config.Tunnel {
@@ -74,19 +76,21 @@ func main() {
 		time.Sleep(1 * time.Second)
 	}
 
-	// get database connection handle
-	db, err := sql.Open(config.DB.ServerType, config.DB.DSN)
-	if err != nil {
-		log.Fatalf("error opening database: %v", err)
-	}
-	// close on shutdown
-	defer db.Close()
+	/*
+		// get database connection handle
+		db, err := sql.Open(config.DB.ServerType, config.DB.DSN)
+		if err != nil {
+			log.Fatalf("error opening database: %v", err)
+		}
+		// close on shutdown
+		defer db.Close()
 
-	// Open doesn't open a connection. Validate DSN data:
-	err = db.Ping()
-	if err != nil {
-		log.Fatalf("error pinging database: %v", err)
-	}
+		// Open doesn't open a connection. Validate DSN data:
+		err = db.Ping()
+		if err != nil {
+			log.Fatalf("error pinging database: %v", err)
+		}
+	*/
 
 	var accessLog io.Writer
 	var f *os.File
@@ -101,7 +105,21 @@ func main() {
 		defer f.Close()
 		accessLog = f
 	}
-	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, logger, accessLog)
+
+	dir := directus.NewDirectus(config.Directus.BaseUrl, config.Directus.Token, config.Directus.CacheTime.Duration)
+	colls, err := dir.GetCollections()
+	if err != nil {
+		logger.Fatalf("cannot get collections: %v", err)
+	}
+	logger.Infof("%v", colls)
+	for _, coll := range colls {
+		tags, err := coll.GetTags()
+		if err != nil {
+			logger.Fatalf("cannot get tags of collections %s", coll.Title)
+		}
+		logger.Infof("coll: %s, tags: %v", coll.Title, tags)
+	}
+	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, dir, logger, accessLog)
 	if err != nil {
 		logger.Panicf("cannot initialize server: %v", err)
 	}

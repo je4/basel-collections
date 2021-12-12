@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"crypto/tls"
-	"database/sql"
 	"fmt"
 	"github.com/bluele/gcache"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/je4/basel-collections/v2/directus"
 	"github.com/je4/basel-collections/v2/files"
 	dcert "github.com/je4/utils/v2/pkg/cert"
 	"github.com/op/go-logging"
@@ -30,10 +30,10 @@ type Server struct {
 	accessLog  io.Writer
 	templates  map[string]*template.Template
 	cache      gcache.Cache
-	db         *sql.DB
+	dir        *directus.Directus
 }
 
-func NewServer(service, addr, addrExt string, db *sql.DB, log *logging.Logger, accessLog io.Writer) (*Server, error) {
+func NewServer(service, addr, addrExt string, dir *directus.Directus, log *logging.Logger, accessLog io.Writer) (*Server, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot split address %s", addr)
@@ -50,7 +50,7 @@ func NewServer(service, addr, addrExt string, db *sql.DB, log *logging.Logger, a
 		host:      host,
 		port:      port,
 		addrExt:   addrExt,
-		db:        db,
+		dir:       dir,
 		log:       log,
 		accessLog: accessLog,
 		templates: map[string]*template.Template{},
