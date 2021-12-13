@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"github.com/Masterminds/sprig"
 	"github.com/bluele/gcache"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -62,9 +63,9 @@ func NewServer(service, addr, addrExt string, dir *directus.Directus, log *loggi
 
 func (s *Server) InitTemplates() error {
 	for key, val := range files.TemplateFiles {
-		tpl, err := template.ParseFS(files.TemplateFS, val)
+		tpl, err := template.New("root.gohtml").Funcs(sprig.FuncMap()).ParseFS(files.TemplateFS, val)
 		if err != nil {
-			return errors.New(fmt.Sprintf("cannot parse template %s: %s", key, val))
+			return errors.Wrapf(err, "cannot parse template %s - %s:", key, val)
 		}
 		s.templates[key] = tpl
 	}

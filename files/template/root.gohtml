@@ -1,13 +1,198 @@
-<!DOCTYPE html>
+{{ $data := . }}<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Basel Collections</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="static/css/basel-collections.css">
+    <link href="static/css/basel-collections.css" rel="stylesheet">
+
+    <style>
+        @media (max-width: 768px) {
+        {{ range $key, $box := .GridSmall }}
+            #content-small-{{ $key }} {
+                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
+                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
+            {{ range $tag, $val := $box.Scheme }}
+                {{ $tag }}: {{ $val }};{{ end }}
+            }
+        {{ end }}
+            #content-small-impressum {
+                grid-column: {{ .ImpressumSmall.Left }} / span {{ .ImpressumSmall.Cols }};
+                grid-row: {{ .ImpressumSmall.Top }} / span {{ .ImpressumSmall.Rows }};
+            {{ range $tag, $val := .ImpressumSmall.Scheme }}
+                {{ $tag }}: {{ $val }};{{ end }}
+            }
+        }
+        @media (min-width: 769px) {
+        {{ range $key, $box := .GridLarge }}
+            #content-large-{{ $key }} {
+                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
+                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
+            {{ range $tag, $val := $box.Scheme }}
+            {{ $tag }}: {{ $val }};{{ end }}
+            }
+        {{ end }}
+            #content-large-impressum {
+                grid-column: {{ .ImpressumLarge.Left }} / span {{ .ImpressumLarge.Cols }};
+                grid-row: {{ .ImpressumLarge.Top }} / span {{ .ImpressumLarge.Rows }};
+            {{ range $tag, $val := .ImpressumLarge.Scheme }}
+            {{ $tag }}: {{ $val }};{{ end }}
+            }
+        }
+    </style>
+
+    <script>
+        window.onload = function() {
+            window.optimizeFontsize();
+            window.addEventListener('resize', window.optimizeFontsize);
+        }
+    </script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-black sticky-top">
+        <div class="container-fluid no-padding">
+            <a class="navbar-brand abs" href=".">
+                Basel<br />Collections
+            </a>
+            <a class="navbar-brand abs" href="javascript:window.hamburger('menu_open', 'menu_closed', 'hamburger-content');">
+                <div class="hamburger">
+                    <svg style="visibility: visible;"
+                         viewBox="0 0 140 140"
+                         width="120px"
+                         height="120px"
+                         y="0px"
+                         x="0px"
+                         id="menu_closed"
+                         version="1.1">
+                        <defs
+                                id="defs13" />
+                        <style
+                                id="style2"
+                                type="text/css">
+                            .st0{fill:#EC339B;}
+                            .st1{fill:#FCE9F3;}
+                        </style>
+                        <rect
+                                id="rect4"
+                                height="67.900002"
+                                width="8.6000004"
+                                class="st1"
+                                transform="scale(-1)"
+                                y="-103.2284"
+                                x="-22.804001" />
+                        <rect
+                                id="rect6"
+                                height="67.900002"
+                                width="8.6000004"
+                                class="st1"
+                                transform="scale(-1)"
+                                y="-103.2284"
+                                x="-51.796001" />
+                        <rect
+                                id="rect8"
+                                height="67.900002"
+                                width="8.6000004"
+                                class="st1"
+                                transform="scale(-1)"
+                                y="-103.2284"
+                                x="-84.133003" />
+                    </svg>
+                </div>
+                <div class="hamburger">
+                    <svg style="visibility: hidden;" viewBox="0 0 140 140"
+                         width="120px"
+                         height="120px"
+                         y="0px"
+                         x="0px"
+                         id="menu_open"
+                         version="1.1">
+                        <defs
+                                id="defs19" />
+                        <style
+                                id="style2"
+                                type="text/css">
+                            .st0{fill:#EC339B;}
+                            .st1{fill:#FCE9F3;}
+                        </style>
+                        <rect
+                                id="rect4"
+                                height="67.9"
+                                width="8.6"
+                                class="st0"
+                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 37.004 137.9033)"
+                                y="35"
+                                x="14.2" />
+                        <rect
+                                id="rect6"
+                                height="67.9"
+                                width="8.6"
+                                class="st0"
+                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 94.9959 137.9033)"
+                                y="35"
+                                x="43.2" />
+                        <rect
+                                id="rect8"
+                                height="49.7"
+                                width="8.6"
+                                class="st0"
+                                transform="matrix(6.123234e-17 -1 1 6.123234e-17 2.4334 198.3367)"
+                                y="73.1"
+                                x="96.1" />
+                        <rect
+                                id="rect10"
+                                height="67.9"
+                                width="8.6"
+                                class="st1"
+                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 74.1953 452.5284)"
+                                y="192.3"
+                                x="32.8" />
+                        <rect
+                                id="rect12"
+                                height="67.9"
+                                width="8.6"
+                                class="st1"
+                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 132.1872 452.5284)"
+                                y="192.3"
+                                x="61.8" />
+                        <rect
+                                id="rect14"
+                                height="67.9"
+                                width="8.6"
+                                class="st1"
+                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 192.1791 452.5284)"
+                                y="192.3"
+                                x="91.8" />
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </nav>
+    <div style="visibility: hidden; position: absolute; ">
+        <div id="testbox" class="cell" style="position: relative; ">
+            <div id="testfield" class="text" style="position:absolute;"></div>
+        </div>
+    </div>
+    <div class="main-base">
+        <div id="menu-1-content" class="menu-content">
+            <h3>
+                Institutionen
+            </h3>
+            {{ range $inst := .Institutions }}
+            <div class="filter-entry">
+                <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
+            </div>
+            {{ end }}
+
+            <h3>
+                Tags
+            </h3>
+            {{ range $t := .Tags }}
+            <div class="filter-entry">
+                <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
+            </div>
+            {{ end }}
+        </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="static/js/base.js"></script>

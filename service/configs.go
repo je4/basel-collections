@@ -69,7 +69,7 @@ var GRIDLARGE = []Grid{
 }
 
 func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int64) {
-	var grid = []Grid{}
+	var grid []Grid
 
 	var entries int64 = int64(len(collections))
 	var boxes int64 = int64(len(template))
@@ -88,7 +88,7 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 
 	height -= firstRow
 	for count < entries && nr < 300 {
-		var h = template[nr%boxes]
+		var h Grid = template[nr%boxes]
 		var text = ""
 		var id int64 = 0
 		var iter = (nr - (nr % boxes)) / boxes
