@@ -11,26 +11,26 @@ import (
 	"time"
 )
 
-type Collection_Tag struct {
+type CollectionTag struct {
 	Id            int64 `json:"id"`
 	CollectionsId int64 `json:"collections_id"`
 	TagsId        int64 `json:"tags_id"`
 }
 
 type Collection struct {
-	dir         *Directus        `json:"-"`
-	Id          int64            `json:"id,omitempty"`
-	Status      string           `json:"status,omitempty"`
-	Sort        int64            `json:"sort,omitempty"`
-	DateCreated string           `json:"date_created,omitempty"`
-	DateUpdated string           `json:"date_updated,omitempty"`
-	Title       string           `json:"title,omitempty"`
-	Image       string           `json:"image,omitempty"`
-	Description string           `json:"description,omitempty"`
-	Institution int64            `json:"institution,omitempty"`
-	Url         string           `json:"url,omitempty"`
-	Hinweis     string           `json:"hinweis,omitempty"`
-	Tags        []Collection_Tag `json:"tags,omitempty"`
+	dir         *Directus       `json:"-"`
+	Id          int64           `json:"id,omitempty"`
+	Status      string          `json:"status,omitempty"`
+	Sort        int64           `json:"sort,omitempty"`
+	DateCreated string          `json:"date_created,omitempty"`
+	DateUpdated string          `json:"date_updated,omitempty"`
+	Title       string          `json:"title,omitempty"`
+	Image       string          `json:"image,omitempty"`
+	Description string          `json:"description,omitempty"`
+	Institution int64           `json:"institution,omitempty"`
+	Url         string          `json:"url,omitempty"`
+	Hinweis     string          `json:"hinweis,omitempty"`
+	Tags        []CollectionTag `json:"tags,omitempty"`
 }
 
 type sortCollectionsBySort []*Collection
@@ -53,6 +53,10 @@ func (c *Collection) GetTags() ([]*Tag, error) {
 		list = append(list, ct.TagsId)
 	}
 	return c.dir.GetTagList(list)
+}
+
+func (c *Collection) GetInstitution() (*Institution, error) {
+	return c.dir.GetInstitution(c.Institution)
 }
 
 func (d *Directus) GetCollections() ([]*Collection, error) {
@@ -79,7 +83,9 @@ func (d *Directus) loadCollections() error {
 	defer d.mutex.Unlock()
 
 	if d.collections == nil || time.Now().Add(-d.cacheTime).After(d.lastAccess) {
-		d.collections = nil
+		if d.collections != nil {
+			d.clearCache()
+		}
 		urlStr := fmt.Sprintf("%s/items/collections?limit=-1&fields=*,tags.*", d.baseurl)
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {

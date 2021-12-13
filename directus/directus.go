@@ -6,13 +6,15 @@ import (
 )
 
 type Directus struct {
-	baseurl     string
-	token       string
-	collections []*Collection
-	tags        []*Tag
-	mutex       sync.Mutex
-	lastAccess  time.Time
-	cacheTime   time.Duration
+	baseurl      string
+	token        string
+	collections  []*Collection
+	tags         []*Tag
+	institutions []*Institution
+	locations    []*Location
+	mutex        sync.Mutex
+	lastAccess   time.Time
+	cacheTime    time.Duration
 }
 
 type Error struct {
@@ -30,4 +32,10 @@ func NewDirectus(baseurl, token string, cacheTime time.Duration) *Directus {
 		cacheTime:   cacheTime,
 	}
 	return d
+}
+
+func (d *Directus) clearCache() {
+	d.collections = nil
+	d.tags = nil
+	d.institutions = nil
 }

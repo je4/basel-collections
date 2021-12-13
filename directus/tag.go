@@ -25,7 +25,9 @@ func (d *Directus) loadTags() error {
 	defer d.mutex.Unlock()
 
 	if d.tags == nil || time.Now().Add(-d.cacheTime).After(d.lastAccess) {
-		d.tags = nil
+		if d.tags != nil {
+			d.clearCache()
+		}
 		urlStr := fmt.Sprintf("%s/items/tags?limit=-1", d.baseurl)
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {
