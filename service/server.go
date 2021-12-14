@@ -19,6 +19,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"path/filepath"
 	"strings"
 )
 
@@ -63,7 +64,7 @@ func NewServer(service, addr, addrExt string, dir *directus.Directus, log *loggi
 
 func (s *Server) InitTemplates() error {
 	for key, val := range files.TemplateFiles {
-		tpl, err := template.New("root.gohtml").Funcs(sprig.FuncMap()).ParseFS(files.TemplateFS, val)
+		tpl, err := template.New(filepath.Base(val)).Funcs(sprig.FuncMap()).ParseFS(files.TemplateFS, val)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", key, val)
 		}

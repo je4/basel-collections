@@ -1,6 +1,8 @@
 package service
 
-import "github.com/je4/basel-collections/v2/directus"
+import (
+	"github.com/je4/basel-collections/v2/directus"
+)
 
 const darkorchid = "#7b458d"
 const darkorchid1 = "#69008B"
@@ -15,9 +17,9 @@ const fontFamilySansSerif = "'IBM Plex Mono', monospace"
 const fontFamilySerif = "'IBM Plex Serif', serif"
 const fontFamilySansSerifCondensed = "'IBM Plex Sans Condensed', sans-serif"
 
-const cell = "cell"
-const blank = "blank"
-const news = "news"
+const BoxCell = "cell"
+const BoxBlank = "blank"
+const BoxNews = "news"
 
 const top = "top"
 const bottom = "bottom"
@@ -34,38 +36,38 @@ var SCHEMES = map[int]map[string]string{
 var IMPRESSUM = map[string]string{"color": black, "background-color": darkgoldenrod, "font-family": fontFamilySansSerif, "font-style": "italic", "vertical-align": "middle"}
 
 var GRIDSMALL = []Grid{
-	{Id: 0, Left: 1, Cols: 3, Top: 2, Rows: 5, Type: cell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
-	{Id: 0, Left: 4, Cols: 5, Top: 2, Rows: 3, Type: news, Scheme: SCHEMES[3], VAlign: bottom},   // 1
-	{Id: 0, Left: 4, Cols: 5, Top: 5, Rows: 3, Type: cell, Scheme: SCHEMES[4], VAlign: top},      // 1
-	{Id: 0, Left: 1, Cols: 3, Top: 7, Rows: 5, Type: cell, Scheme: SCHEMES[2], VAlign: bottom},   // 1
-	{Id: 0, Left: 4, Cols: 5, Top: 8, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 1
-	{Id: 0, Left: 4, Cols: 5, Top: 9, Rows: 4, Type: cell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
-	{Id: 0, Left: 1, Cols: 3, Top: 12, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom}, // 1
-	{Id: 0, Left: 1, Cols: 5, Top: 13, Rows: 4, Type: cell, Scheme: SCHEMES[4], VAlign: bottom},  // 1
-	{Id: 0, Left: 6, Cols: 3, Top: 13, Rows: 4, Type: cell, Scheme: SCHEMES[2], VAlign: bottom},  // 1
+	{Id: 0, Left: 1, Cols: 3, Top: 2, Rows: 5, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
+	{Id: 0, Left: 4, Cols: 5, Top: 2, Rows: 3, Type: BoxNews, Scheme: SCHEMES[3], VAlign: bottom},   // 1
+	{Id: 0, Left: 4, Cols: 5, Top: 5, Rows: 3, Type: BoxCell, Scheme: SCHEMES[4], VAlign: top},      // 1
+	{Id: 0, Left: 1, Cols: 3, Top: 7, Rows: 5, Type: BoxCell, Scheme: SCHEMES[2], VAlign: bottom},   // 1
+	{Id: 0, Left: 4, Cols: 5, Top: 8, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 1
+	{Id: 0, Left: 4, Cols: 5, Top: 9, Rows: 4, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
+	{Id: 0, Left: 1, Cols: 3, Top: 12, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 1
+	{Id: 0, Left: 1, Cols: 5, Top: 13, Rows: 4, Type: BoxCell, Scheme: SCHEMES[4], VAlign: bottom},  // 1
+	{Id: 0, Left: 6, Cols: 3, Top: 13, Rows: 4, Type: BoxCell, Scheme: SCHEMES[2], VAlign: bottom},  // 1
 }
 
 var GRIDLARGE = []Grid{
-	{Id: 0, Left: 1, Cols: 2, Top: 2, Rows: 3, Type: cell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
-	{Id: 0, Left: 3, Cols: 2, Top: 2, Rows: 3, Type: news, Scheme: SCHEMES[3], VAlign: bottom},   // 2
-	{Id: 0, Left: 5, Cols: 3, Top: 2, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 3
-	{Id: 0, Left: 8, Cols: 2, Top: 2, Rows: 5, Type: cell, Scheme: SCHEMES[6], VAlign: bottom},   // 4
-	{Id: 0, Left: 10, Cols: 3, Top: -1, Rows: 4, Type: cell, Scheme: SCHEMES[4], VAlign: bottom}, // 5
-	{Id: 0, Left: 5, Cols: 3, Top: 3, Rows: 3, Type: cell, Scheme: SCHEMES[2], VAlign: bottom},   // 6
-	{Id: 0, Left: 10, Cols: 3, Top: 3, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom}, // 7
-	{Id: 0, Left: 10, Cols: 3, Top: 4, Rows: 3, Type: cell, Scheme: SCHEMES[5], VAlign: bottom},  // 8
-	{Id: 0, Left: 1, Cols: 2, Top: 5, Rows: 4, Type: cell, Scheme: SCHEMES[6], VAlign: bottom},   // 9
-	{Id: 0, Left: 3, Cols: 2, Top: 5, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 10
-	{Id: 0, Left: 3, Cols: 4, Top: 6, Rows: 3, Type: cell, Scheme: SCHEMES[4], VAlign: bottom},   // 11
-	{Id: 0, Left: 7, Cols: 1, Top: 6, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 12
-	{Id: 0, Left: 7, Cols: 4, Top: 7, Rows: 3, Type: cell, Scheme: SCHEMES[1], VAlign: bottom},   // 13
-	{Id: 0, Left: 11, Cols: 2, Top: 7, Rows: 6, Type: blank, Scheme: SCHEMES[3], VAlign: bottom}, // 14
-	{Id: 0, Left: 1, Cols: 1, Top: 9, Rows: 4, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 15
-	{Id: 0, Left: 2, Cols: 2, Top: 9, Rows: 4, Type: cell, Scheme: SCHEMES[5], VAlign: bottom},   // 16
-	{Id: 0, Left: 4, Cols: 2, Top: 9, Rows: 4, Type: cell, Scheme: SCHEMES[6], VAlign: bottom},   // 17
-	{Id: 0, Left: 6, Cols: 1, Top: 9, Rows: 1, Type: blank, Scheme: SCHEMES[3], VAlign: bottom},  // 18
-	{Id: 0, Left: 6, Cols: 3, Top: 10, Rows: 3, Type: cell, Scheme: SCHEMES[2], VAlign: bottom},  // 19
-	{Id: 0, Left: 9, Cols: 1, Top: 10, Rows: 3, Type: blank, Scheme: SCHEMES[3], VAlign: bottom}, // 20
+	{Id: 0, Left: 1, Cols: 2, Top: 2, Rows: 3, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
+	{Id: 0, Left: 3, Cols: 2, Top: 2, Rows: 3, Type: BoxNews, Scheme: SCHEMES[3], VAlign: bottom},   // 2
+	{Id: 0, Left: 5, Cols: 3, Top: 2, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 3
+	{Id: 0, Left: 8, Cols: 2, Top: 2, Rows: 5, Type: BoxCell, Scheme: SCHEMES[6], VAlign: bottom},   // 4
+	{Id: 0, Left: 10, Cols: 3, Top: -1, Rows: 4, Type: BoxCell, Scheme: SCHEMES[4], VAlign: bottom}, // 5
+	{Id: 0, Left: 5, Cols: 3, Top: 3, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: bottom},   // 6
+	{Id: 0, Left: 10, Cols: 3, Top: 3, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 7
+	{Id: 0, Left: 10, Cols: 3, Top: 4, Rows: 3, Type: BoxCell, Scheme: SCHEMES[5], VAlign: bottom},  // 8
+	{Id: 0, Left: 1, Cols: 2, Top: 5, Rows: 4, Type: BoxCell, Scheme: SCHEMES[6], VAlign: bottom},   // 9
+	{Id: 0, Left: 3, Cols: 2, Top: 5, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 10
+	{Id: 0, Left: 3, Cols: 4, Top: 6, Rows: 3, Type: BoxCell, Scheme: SCHEMES[4], VAlign: bottom},   // 11
+	{Id: 0, Left: 7, Cols: 1, Top: 6, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 12
+	{Id: 0, Left: 7, Cols: 4, Top: 7, Rows: 3, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 13
+	{Id: 0, Left: 11, Cols: 2, Top: 7, Rows: 6, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 14
+	{Id: 0, Left: 1, Cols: 1, Top: 9, Rows: 4, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 15
+	{Id: 0, Left: 2, Cols: 2, Top: 9, Rows: 4, Type: BoxCell, Scheme: SCHEMES[5], VAlign: bottom},   // 16
+	{Id: 0, Left: 4, Cols: 2, Top: 9, Rows: 4, Type: BoxCell, Scheme: SCHEMES[6], VAlign: bottom},   // 17
+	{Id: 0, Left: 6, Cols: 1, Top: 9, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 18
+	{Id: 0, Left: 6, Cols: 3, Top: 10, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: bottom},  // 19
+	{Id: 0, Left: 9, Cols: 1, Top: 10, Rows: 3, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 20
 }
 
 func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int64) {
@@ -100,11 +102,13 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 			h.Rows = top + firstRow
 		} else {
 			switch template[nr%boxes].Type {
-			case blank:
-			case news:
+			case BoxBlank:
+			case BoxNews:
+				text = "News"
 			default:
 				text = collections[count].Title // get Title
-				id = collections[count].Id      // get ID
+				//text = fmt.Sprintf("%s #%v", text, collections[count].Sort)
+				id = collections[count].Id // get ID
 				count++
 			}
 		}
@@ -125,9 +129,15 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 		if top > lastRow {
 			continue
 		}
+		if h.Rows+top > lastRow {
+			h.Rows = lastRow - top
+			if h.Rows <= 0 {
+				continue
+			}
+		}
 		h.Top = top
 		h.Text = ""
-		if h.Type == news {
+		if h.Type == BoxNews {
 			h.Text = "News"
 		}
 		n := h.Top + h.Rows

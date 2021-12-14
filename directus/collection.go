@@ -66,6 +66,40 @@ func (d *Directus) GetCollections() ([]*Collection, error) {
 	return d.collections, nil
 }
 
+func (d *Directus) GetCollectionsByInstitution(institution int64) ([]*Collection, error) {
+	if err := d.loadCollections(); err != nil {
+		return nil, err
+	}
+	var collections = []*Collection{}
+	for _, coll := range d.collections {
+		if coll.Institution == institution {
+			collections = append(collections, coll)
+		}
+	}
+	return collections, nil
+}
+
+func (d *Directus) GetCollectionsByTags(tags []int64) ([]*Collection, error) {
+	if err := d.loadCollections(); err != nil {
+		return nil, err
+	}
+	var collections = []*Collection{}
+	for _, coll := range d.collections {
+		var tagCount int
+		for _, t := range tags {
+			for _, t2 := range coll.Tags {
+				if t == t2.Id {
+					tagCount++
+				}
+			}
+		}
+		if tagCount == len(tags) {
+			collections = append(collections, coll)
+		}
+	}
+	return collections, nil
+}
+
 func (d *Directus) GetCollection(id int64) (*Collection, error) {
 	if err := d.loadCollections(); err != nil {
 		return nil, err
@@ -86,7 +120,7 @@ func (d *Directus) loadCollections() error {
 		if d.collections != nil {
 			d.clearCache()
 		}
-		urlStr := fmt.Sprintf("%s/items/collections?limit=-1&fields=*,tags.*", d.baseurl)
+		urlStr := fmt.Sprintf("%s/items/collections?filter[status][_eq]=published&limit=-1&fields=*,tags.*", d.baseurl)
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {
 			return errors.Wrapf(err, "cannot create request %s", urlStr)

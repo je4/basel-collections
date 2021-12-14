@@ -32,7 +32,16 @@ func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	colls, err := s.dir.GetCollections()
+	var colls []*directus.Collection
+	if institution > 0 {
+		colls, err = s.dir.GetCollectionsByInstitution(institution)
+	} else {
+		if tag > 0 {
+			colls, err = s.dir.GetCollectionsByTags([]int64{tag})
+		} else {
+			colls, err = s.dir.GetCollections()
+		}
+	}
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
