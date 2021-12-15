@@ -14,11 +14,12 @@ font-family: 'IBM Plex Serif', serif;
 
 body {
   line-height: 1;
+  background-color: $dark;
 }
 
 // bootstrap stuff
 .bg-black {
-  background-color: #1a1a1a;
+  background-color: $dark;
 }
 
 .navbar-dark .navbar-brand {
@@ -233,29 +234,34 @@ body {
   background-color: #7B1FA2;
 }
 
-// Medium devices (tablets, 768px and up)
-@media (max-width: $media-breakpoint-1) {
-  .tags {
-    font-family: $font-family-mono;
-    font-weight: $font-weight;
-    font-size: 44pt;
-    color: $deeppink;
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    a:hover {
-      background-color: inherit;
-    }
-    a.selected:hover {
-      background-color: inherit;
-    }
-    a.selected {
-      background-color: inherit;
-    }
-
+.tags {
+  font-family: $font-family-mono;
+  font-weight: $font-weight;
+  font-size: 44pt;
+  color: $deeppink;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:link {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:hover {
+    background-color: inherit;
+  }
+  a.selected:hover {
+    background-color: inherit;
+  }
+  a.selected {
+    background-color: inherit;
   }
 
+}
+
+
+// Medium devices (tablets, 768px and up)
+@media (max-width: $media-breakpoint-1) {
   .hide-small {
     position: absolute;
     top: 0;
@@ -271,7 +277,7 @@ body {
     font-size: 32pt;
     color: $white;
     grid-column: 1 / span 8;
-    grid-row: 18;
+    grid-row: 15;
     padding: 10px;
   }
 
@@ -325,7 +331,7 @@ body {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-gap: 0;
-    grid-template-rows: repeat(10, minmax(60px, 65px)) max-content repeat(6, minmax(60px, 65px)) max-content repeat(3, minmax(60px, 65px));
+    grid-template-rows: repeat(10, minmax(60px, 65px)) max-content minmax(60px, 65px) max-content repeat(4, minmax(60px, 65px)) max-content repeat(3, minmax(60px, 65px));
   }
 
   #menu-1 {
@@ -377,7 +383,7 @@ body {
   #pinkblocker {
     background-color: $pink;
     grid-column: 1 / span 2;
-    grid-row: 13 / span 4;
+    grid-row: 13 / span 1;
   }
 
   #hinweis {
@@ -386,7 +392,7 @@ body {
     font-size: 33pt;
     color: $white;
     grid-column: 3 / span 6;
-    grid-row: 13 / span 4;
+    grid-row: 13 / span 1;
     padding-left: 10px;
   }
 
@@ -395,13 +401,6 @@ body {
 
 // Large devices (tablets, 768px and up)
 @media (min-width: ($media-breakpoint-1+1)) {
-  .tags {
-    font-family: $font-family-mono;
-    font-weight: $font-weight;
-    font-size: 44pt;
-    color: $deeppink;
-  }
-
   .hide-large {
     position: absolute;
     top: 0;

@@ -19,7 +19,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"strings"
 )
 
@@ -63,13 +62,19 @@ func NewServer(service, addr, addrExt string, dir *directus.Directus, log *loggi
 }
 
 func (s *Server) InitTemplates() error {
-	for key, val := range files.TemplateFiles {
-		tpl, err := template.New(filepath.Base(val)).Funcs(sprig.FuncMap()).ParseFS(files.TemplateFS, val)
-		if err != nil {
-			return errors.Wrapf(err, "cannot parse template %s - %s:", key, val)
-		}
-		s.templates[key] = tpl
+	funcs := sprig.FuncMap()
+	funcs["raw"] = func(s string) template.HTML { return template.HTML(s) }
+
+	tpl, err := template.New("root").Funcs(funcs).Parse(files.RootTemplate)
+	if err != nil {
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "root", files.RootTemplate)
 	}
+	s.templates["root"] = tpl
+	tpl, err = template.New("detail").Funcs(funcs).Parse(files.DetailTemplate)
+	if err != nil {
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.DetailTemplate)
+	}
+	s.templates["detail"] = tpl
 	return nil
 }
 
@@ -107,6 +112,7 @@ func (s *Server) ListenAndServe(cert, key string) (err error) {
 	).Methods("GET")
 
 	router.HandleFunc("/", s.rootHandler).Methods("GET")
+	router.HandleFunc("/detail/{collection}", s.detailHandler).Methods("GET")
 
 	loggedRouter := handlers.CombinedLoggingHandler(s.accessLog, handlers.ProxyHeaders(router))
 	addr := net.JoinHostPort(s.host, s.port)

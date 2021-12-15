@@ -21,7 +21,7 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 	if collectionStr != "" {
 		collection, _ = strconv.ParseInt(collectionStr, 10, 64)
 	}
-	theCollection, err := s.dir.GetInstitution(collection)
+	theCollection, err := s.dir.GetCollection(collection)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		w.Header().Set("Content-type", "text/plain")
@@ -71,10 +71,33 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, colls)
-	gridSmall, lastRowSmall := buildGrid(GRIDLARGE, colls)
+	/*
+		theInstitution, err := theCollection.GetInstitution()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Header().Set("Content-type", "text/plain")
+			w.Write([]byte(fmt.Sprintf("cannot get institution: %v", err)))
+			return
+		}
+	*/
 
-	theInstitution, err := theCollection.GetInstitution()
+	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, colls)
+	gridSmall, lastRowSmall := buildGrid(GRIDSMALL, colls)
+
+	var theBoxLarge Grid
+	for _, box := range gridLarge {
+		if box.Id == collection {
+			theBoxLarge = box
+			break
+		}
+	}
+	var theBoxSmall Grid
+	for _, box := range gridSmall {
+		if box.Id == collection {
+			theBoxSmall = box
+			break
+		}
+	}
 
 	impressumLarge := &Impressum{
 		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
@@ -91,19 +114,19 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
 	}
 
-	tpl := s.templates["root"]
+	tpl := s.templates["detail"]
 	if err := tpl.Execute(w, struct {
-		GridLarge, GridSmall           []Grid
 		ImpressumLarge, ImpressumSmall *Impressum
 		Tags                           []*directus.Tag
 		Institutions                   []*directus.Institution
 		Collections                    []*directus.Collection
 		Institution                    int64
 		Tag                            int64
+		BoxLarge                       Grid
+		BoxSmall                       Grid
+		Collection                     *directus.Collection
 		DetailParam                    string
 	}{
-		GridLarge:      gridLarge,
-		GridSmall:      gridSmall,
 		ImpressumLarge: impressumLarge,
 		ImpressumSmall: impressumSmall,
 		Collections:    colls,
@@ -111,11 +134,14 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		Institutions:   institutions,
 		Tag:            tag,
 		Institution:    institution,
+		BoxLarge:       theBoxLarge,
+		BoxSmall:       theBoxSmall,
+		Collection:     theCollection,
 		DetailParam:    "?" + detailValues.Encode(),
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("error executing template %s : %v", "root", err)))
+		w.Write([]byte(fmt.Sprintf("error executing template %s : %v", "detail", err)))
 		return
 	}
 }

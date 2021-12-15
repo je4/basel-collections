@@ -7,9 +7,8 @@ import "embed"
 //go:embed static/css/basel-collections.css.map
 var StaticFS embed.FS
 
-//go:embed template/*
-var TemplateFS embed.FS
+//go:embed template/root.gohtml
+var RootTemplate string
 
-var TemplateFiles = map[string]string{
-	"root": "template/root.gohtml",
-}
+//go:embed template/detail.gohtml
+var DetailTemplate string

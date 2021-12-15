@@ -107,18 +107,20 @@ func main() {
 	}
 
 	dir := directus.NewDirectus(config.Directus.BaseUrl, config.Directus.Token, config.Directus.CacheTime.Duration)
-	colls, err := dir.GetCollections()
-	if err != nil {
-		logger.Fatalf("cannot get collections: %v", err)
-	}
-	logger.Infof("%v", colls)
-	for _, coll := range colls {
-		tags, err := coll.GetTags()
+	/*
+		colls, err := dir.GetCollections()
 		if err != nil {
-			logger.Fatalf("cannot get tags of collections %s", coll.Title)
+			logger.Fatalf("cannot get collections: %v", err)
 		}
-		logger.Infof("coll: %s, tags: %v", coll.Title, tags)
-	}
+		logger.Infof("%v", colls)
+		for _, coll := range colls {
+			tags, err := coll.GetTags()
+			if err != nil {
+				logger.Fatalf("cannot get tags of collections %s", coll.Title)
+			}
+			logger.Infof("coll: %s, tags: %v", coll.Title, tags)
+		}
+	*/
 	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, dir, logger, accessLog)
 	if err != nil {
 		logger.Panicf("cannot initialize server: %v", err)
