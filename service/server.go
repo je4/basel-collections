@@ -19,22 +19,29 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
+	"path"
 	"strings"
+	"sync"
 )
 
 type Server struct {
-	service    string
-	host, port string
-	addrExt    string
-	srv        *http.Server
-	log        *logging.Logger
-	accessLog  io.Writer
-	templates  map[string]*template.Template
-	cache      gcache.Cache
-	dir        *directus.Directus
+	service        string
+	host, port     string
+	addrExt        string
+	staticFiles    string
+	templateFiles  string
+	templateReload bool
+	templateMutex  sync.RWMutex
+	srv            *http.Server
+	log            *logging.Logger
+	accessLog      io.Writer
+	templates      map[string]*template.Template
+	cache          gcache.Cache
+	dir            *directus.Directus
 }
 
-func NewServer(service, addr, addrExt string, dir *directus.Directus, log *logging.Logger, accessLog io.Writer) (*Server, error) {
+func NewServer(service, addr, addrExt, staticFiles, templateFiles string, templateReload bool, dir *directus.Directus, log *logging.Logger, accessLog io.Writer) (*Server, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot split address %s", addr)
@@ -47,15 +54,19 @@ func NewServer(service, addr, addrExt string, dir *directus.Directus, log *loggi
 	*/
 
 	srv := &Server{
-		service:   service,
-		host:      host,
-		port:      port,
-		addrExt:   addrExt,
-		dir:       dir,
-		log:       log,
-		accessLog: accessLog,
-		templates: map[string]*template.Template{},
-		cache:     gcache.New(500).ARC().Build(),
+		service:        service,
+		host:           host,
+		port:           port,
+		addrExt:        addrExt,
+		staticFiles:    staticFiles,
+		templateFiles:  templateFiles,
+		templateReload: templateReload,
+		dir:            dir,
+		templateMutex:  sync.RWMutex{},
+		log:            log,
+		accessLog:      accessLog,
+		templates:      map[string]*template.Template{},
+		cache:          gcache.New(500).ARC().Build(),
 	}
 
 	return srv, srv.InitTemplates()
@@ -65,25 +76,49 @@ func (s *Server) InitTemplates() error {
 	funcs := sprig.FuncMap()
 	funcs["raw"] = func(s string) template.HTML { return template.HTML(s) }
 
-	tpl, err := template.New("root").Funcs(funcs).Parse(files.RootTemplate)
-	if err != nil {
-		return errors.Wrapf(err, "cannot parse template %s - %s:", "root", files.RootTemplate)
+	s.templateMutex.Lock()
+	defer s.templateMutex.Unlock()
+
+	if s.templateFiles != "" {
+		file := path.Join(s.templateFiles, "root.gohtml")
+		tpl, err := template.New("root.gohtml").Funcs(funcs).ParseFiles(file)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "root", file)
+		}
+		s.templates["root"] = tpl
+		file = path.Join(s.templateFiles, "detail.gohtml")
+		tpl, err = template.New("detail.gohtml").Funcs(funcs).ParseFiles(file)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", file)
+		}
+		s.templates["detail"] = tpl
+
+	} else {
+		tpl, err := template.New("root").Funcs(funcs).Parse(files.RootTemplate)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "root", files.RootTemplate)
+		}
+		s.templates["root"] = tpl
+		tpl, err = template.New("detail").Funcs(funcs).Parse(files.DetailTemplate)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.DetailTemplate)
+		}
+		s.templates["detail"] = tpl
 	}
-	s.templates["root"] = tpl
-	tpl, err = template.New("detail").Funcs(funcs).Parse(files.DetailTemplate)
-	if err != nil {
-		return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.DetailTemplate)
-	}
-	s.templates["detail"] = tpl
 	return nil
 }
 
-func (s *Server) ListenAndServe(cert, key string) (err error) {
+func (s *Server) ListenAndServe(cert, key string) error {
 	router := mux.NewRouter()
-
-	fsys, err := fs.Sub(files.StaticFS, "static")
-	if err != nil {
-		return errors.Wrap(err, "cannot get subtree of embedded static")
+	var fsys fs.FS
+	var err error
+	if s.staticFiles != "" {
+		fsys = os.DirFS(s.staticFiles)
+	} else {
+		fsys, err = fs.Sub(files.StaticFS, "static")
+		if err != nil {
+			return errors.Wrap(err, "cannot get subtree of embedded static")
+		}
 	}
 	httpStaticServer := http.FileServer(http.FS(fsys))
 	router.PathPrefix("/static").Handler(

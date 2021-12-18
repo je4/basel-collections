@@ -121,7 +121,7 @@ func main() {
 			logger.Infof("coll: %s, tags: %v", coll.Title, tags)
 		}
 	*/
-	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, dir, logger, accessLog)
+	srv, err := service.NewServer(config.ServiceName, config.Addr, config.AddrExt, config.StaticFiles, config.TemplateFiles, config.TemplateReload, dir, logger, accessLog)
 	if err != nil {
 		logger.Panicf("cannot initialize server: %v", err)
 	}

@@ -114,7 +114,13 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
 	}
 
+	if s.templateReload {
+		s.InitTemplates()
+	}
+
 	tpl := s.templates["detail"]
+	s.templateMutex.RLock()
+	defer s.templateMutex.RUnlock()
 	if err := tpl.Execute(w, struct {
 		ImpressumLarge, ImpressumSmall *Impressum
 		Tags                           []*directus.Tag

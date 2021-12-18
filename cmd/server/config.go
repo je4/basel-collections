@@ -59,9 +59,12 @@ type Config struct {
 	KeyPEM      string `toml:"keypem"`
 	//	JWTKey       string               `toml:"jwtkey"`
 	//	JWTAlg       []string             `toml:"jwtalg"`
-	DB       CfgDatabase          `toml:"database"`
-	Directus Directus             `toml:"directus"`
-	Tunnel   map[string]SSHTunnel `toml:"tunnel"`
+	DB             CfgDatabase          `toml:"database"`
+	Directus       Directus             `toml:"directus"`
+	StaticFiles    string               `toml:"staticfiles"`
+	TemplateFiles  string               `toml:"templatefiles"`
+	TemplateReload bool                 `toml:"templatereload"`
+	Tunnel         map[string]SSHTunnel `toml:"tunnel"`
 }
 
 func LoadConfig(filepath string) Config {
