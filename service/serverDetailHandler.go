@@ -82,7 +82,7 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 	*/
 
 	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, colls)
-	gridSmall, lastRowSmall := buildGrid(GRIDSMALL, colls)
+	gridSmall, _ := buildGrid(GRIDSMALL, colls)
 
 	var theBoxLarge Grid
 	for _, box := range gridLarge {
@@ -107,7 +107,7 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
 	}
 	impressumSmall := &Impressum{
-		Id: 0, Left: 1, Cols: 8, Top: lastRowSmall, Rows: 3,
+		Id: 0, Left: 1, Cols: 8, Top: 14, Rows: 3,
 		Type:   "impressum",
 		Scheme: IMPRESSUM,
 		VAlign: "middle",

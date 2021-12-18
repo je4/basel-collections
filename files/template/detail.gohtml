@@ -17,29 +17,7 @@
             {{ range $tag, $val := .BoxSmall.Scheme }}
                 {{ $tag }}: {{ $val }};{{ end }}
             }
-            #title-large {
-                position: absolute;
-                top: 0;
-                left: 0;
-                visibility: hidden;
-                height: 0px;
-                width: 0px;
-            }
 
-            #content-small-impressum {
-                grid-column: {{ .ImpressumSmall.Left }} / span {{ .ImpressumSmall.Cols }};
-                grid-row: {{ .ImpressumSmall.Top }} / span {{ .ImpressumSmall.Rows }};
-            {{ range $tag, $val := .ImpressumSmall.Scheme }}
-                {{ $tag }}: {{ $val }};{{ end }}
-            }
-            #content-large-impressum {
-                position: absolute;
-                top: 0;
-                left: 0;
-                visibility: hidden;
-                height: 0px;
-                width: 0px;
-            }
         }
 
 
@@ -51,30 +29,7 @@
             {{ range $tag, $val := .BoxLarge.Scheme }}
             {{ $tag }}: {{ $val }};{{ end }}
             }
-            #title-small {
-                position: absolute;
-                top: 0;
-                left: 0;
-                visibility: hidden;
-                height: 0px;
-                width: 0px;
-            }
-            
-            #content-large-impressum {
-                grid-column: {{ .ImpressumLarge.Left }} / span {{ .ImpressumLarge.Cols }};
-                grid-row: {{ .ImpressumLarge.Top }} / span {{ .ImpressumLarge.Rows }};
-            {{ range $tag, $val := .ImpressumLarge.Scheme }}
-            {{ $tag }}: {{ $val }};{{ end }}
-            }
 
-            #content-small-impressum {
-                position: absolute;
-                top: 0;
-                left: 0;
-                visibility: hidden;
-                height: 0px;
-                width: 0px;
-            }
         }
     </style>
 
@@ -363,15 +318,15 @@
         </div>
 
 
-        <div id="content-large-impressum" class="type-{{ .ImpressumLarge.Type }}">
-            <div class="text pos-{{ index .ImpressumLarge.Scheme "vertical-align" }}">
+        <div id="content-large-impressum" class="type-impressum">
+            <div class="text pos-middle">
                 Impressum | Datenschutz | Informationen<br />
                 (c) 2021 Basel Collections
             </div>
         </div>
 
-        <div id="content-small-impressum" class="type-{{ .ImpressumSmall.Type }}">
-            <div class="text pos-{{ index .ImpressumSmall.Scheme "vertical-align" }}">
+        <div id="content-small-impressum" class="type-impressum">
+            <div class="text pos-middle">
                 Impressum | Datenschutz | Informationen<br />
                 (c) 2021 Basel Collections
             </div>
