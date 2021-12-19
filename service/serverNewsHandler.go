@@ -8,15 +8,7 @@ import (
 	"strconv"
 )
 
-type Impressum struct {
-	Id, Left, Cols, Top, Rows int64
-	Type                      string
-	Scheme                    map[string]string
-	VAlign                    string
-	Text                      string
-}
-
-func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
+func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 	var err error
 	detailValues := url.Values{}
 
@@ -32,21 +24,17 @@ func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	var colls []*directus.Collection
-	if institution > 0 {
-		colls, err = s.dir.GetCollectionsByInstitution(institution)
-	} else {
-		if tag > 0 {
-			colls, err = s.dir.GetCollectionsByTags([]int64{tag})
-		} else {
-			colls, err = s.dir.GetCollections()
-		}
-	}
+	var news []*directus.News
+	news, err = s.dir.GetNews()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
 		w.Write([]byte(fmt.Sprintf("cannot get collections: %v", err)))
 		return
+	}
+	var contents = []Content{}
+	for _, n := range news {
+		contents = append(contents, n)
 	}
 	tags, err := s.dir.GetTags()
 	if err != nil {
@@ -63,8 +51,8 @@ func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, colls)
-	gridSmall, lastRowSmall := buildGrid(GRIDLARGE, colls)
+	gridLarge, lastRowLarge := buildGrid(NEWSLARGE, contents)
+	gridSmall, lastRowSmall := buildGrid(NEWSLARGE, contents)
 
 	impressumLarge := &Impressum{
 		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
@@ -85,16 +73,16 @@ func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
 		s.InitTemplates()
 	}
 
-	tpl := s.templates["root"]
 	s.templateMutex.RLock()
 	defer s.templateMutex.RUnlock()
+	tpl := s.templates["news"]
 
 	if err := tpl.Execute(w, struct {
 		GridLarge, GridSmall           []Grid
 		ImpressumLarge, ImpressumSmall *Impressum
 		Tags                           []*directus.Tag
 		Institutions                   []*directus.Institution
-		Collections                    []*directus.Collection
+		News                           []*directus.News
 		Institution                    int64
 		Tag                            int64
 		DetailParam                    string
@@ -103,7 +91,7 @@ func (s *Server) rootHandler(w http.ResponseWriter, req *http.Request) {
 		GridSmall:      gridSmall,
 		ImpressumLarge: impressumLarge,
 		ImpressumSmall: impressumSmall,
-		Collections:    colls,
+		News:           news,
 		Tags:           tags,
 		Institutions:   institutions,
 		Tag:            tag,

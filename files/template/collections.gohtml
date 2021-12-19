@@ -5,31 +5,76 @@
     <title>Basel Collections</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="../static/css/basel-collections.css" rel="stylesheet">
+    <link href="static/css/basel-collections.css" rel="stylesheet">
 
     <style>
-
-
         @media (max-width: 768px) {
-            #title-small {
-                grid-column: 1 / span {{ .BoxSmall.Cols }};
-                grid-row: 2 / span {{ .BoxSmall.Rows }};
-            {{ range $tag, $val := .BoxSmall.Scheme }}
+        {{ range $key, $box := .GridSmall }}
+            #content-small-{{ $key }} {
+                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
+                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
+            {{ range $tag, $val := $box.Scheme }}
                 {{ $tag }}: {{ $val }};{{ end }}
             }
-
+        {{ end }}
+            #content-small-impressum {
+                grid-column: {{ .ImpressumSmall.Left }} / span {{ .ImpressumSmall.Cols }};
+                grid-row: {{ .ImpressumSmall.Top }} / span {{ .ImpressumSmall.Rows }};
+            {{ range $tag, $val := .ImpressumSmall.Scheme }}
+                {{ $tag }}: {{ $val }};{{ end }}
+            }
+        {{ range $key, $box := .GridLarge }}
+            #content-large-{{ $key }} {
+                position: absolute;
+                top: 0;
+                left: 0;
+                visibility: hidden;
+                height: 0px;
+                width: 0px;
+            }
+        {{ end }}
+            #content-large-impressum {
+                position: absolute;
+                top: 0;
+                left: 0;
+                visibility: hidden;
+                height: 0px;
+                width: 0px;
+            }
         }
-
-
-
         @media (min-width: 769px) {
-            #title-large {
-                grid-column: 1 / span {{ .BoxLarge.Cols }};
-                grid-row: 2 / span {{ .BoxLarge.Rows }};
-            {{ range $tag, $val := .BoxLarge.Scheme }}
+        {{ range $key, $box := .GridLarge }}
+            #content-large-{{ $key }} {
+                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
+                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
+            {{ range $tag, $val := $box.Scheme }}
             {{ $tag }}: {{ $val }};{{ end }}
             }
-
+        {{ end }}
+            #content-large-impressum {
+                grid-column: {{ .ImpressumLarge.Left }} / span {{ .ImpressumLarge.Cols }};
+                grid-row: {{ .ImpressumLarge.Top }} / span {{ .ImpressumLarge.Rows }};
+            {{ range $tag, $val := .ImpressumLarge.Scheme }}
+            {{ $tag }}: {{ $val }};{{ end }}
+            }
+        {{ range $key, $box := .GridSmall }}
+            #content-small-{{ $key }} {
+                position: absolute;
+                top: 0;
+                left: 0;
+                visibility: hidden;
+                height: 0px;
+                width: 0px;
+            }
+        {{ end }}
+            #content-small-impressum {
+                position: absolute;
+                top: 0;
+                left: 0;
+                visibility: hidden;
+                height: 0px;
+                width: 0px;
+            }
         }
     </style>
 
@@ -43,7 +88,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-black sticky-top">
         <div class="container-fluid no-padding">
-            <a class="navbar-brand abs" href="../">
+            <a class="navbar-brand abs" href=".">
                 Basel<br />Collections
             </a>
             <a class="navbar-brand abs" href="javascript:window.hamburger('menu_open', 'menu_closed', 'hamburger-content');">
@@ -164,7 +209,7 @@
             <div id="testfield" class="text" style="position:absolute;"></div>
         </div>
     </div>
-    <div class="main-detail">
+    <div class="main-base">
         <div id="menu-1-content" class="menu-content">
             <h3>
                 Institutionen
@@ -187,7 +232,7 @@
         <div id="hamburger-content" class="hamburger-content">
             <h3 >
                 <div class="filter-entry">
-                    <a class="" href="../">Home</a>
+                    <a class="" href="/">Home</a>
                 </div>
                 <div class="filter-entry">
                     <a class="" href="/">News</a>
@@ -253,80 +298,30 @@
             </a>
         </div>
         <div id="menu-3" class="cell box3"></div>
-        <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; margin-right: 10px;">
-            <a href="../..{{ .DetailParam }}"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                  width="55px" height="55px" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357; position:absolute; top:50%; bottom:50%; transform:translate(-100%, -50%);" xml:space="preserve">
-                        <style type="text/css">
-                            .st0{fill:#FCE9F3;}
-                        </style>
-                    <g id="clear">
-                        <polygon class="st0_close_detail" points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3
-                                214.2,178.5 		"/>
-                    </g>
-                    </svg></a>
-        </div>
-        <div id="title-large" class="type-{{ .BoxLarge.Type }}">
-            <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}">
-                {{ .Collection.Title }}
-            </div>
-        </div>
-        <div id="title-small" class="type-{{ .BoxLarge.Type }}">
-            <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}">
-                {{ .Collection.Title }}
-            </div>
-        </div>
-        <div id="title-box">
-            {{ .Collection.Title }}<br />
-            <a style="text-decoration: inherit; color: inherit;" href="{{ .Collection.Url }}">Collection Website<svg
-                        id="Ebene_1"
-                        data-name="Ebene 1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 80 80"
-                        width="40"
-                        height="40"
-                >
-                    <defs><style>.cls-1{fill:#e6e6e6;}</style></defs><polygon class="cls-1" points="61.44 63.11 16.18 63.11 16.18 20.45 16.18 19.26 47.18 19.26 47.18 17.32 14.18 17.32 14.18 19.26 14.18 19.26 14.18 63.11 14.18 63.11 14.18 65.05 60.2 65.05 63.43 65.05 63.43 65.01 63.44 65.01 63.44 33.2 61.44 33.2 61.44 63.11"/><polygon class="cls-1" points="63.8 14.95 51.65 14.95 51.65 16.97 62.29 16.97 37.55 41.04 38.96 42.49 63.8 18.33 63.8 29.12 65.82 29.12 65.82 16.97 65.82 14.95 63.8 14.95"/>
-                </svg></a><br />
-            {{ $inst := .Collection.GetInstitution }}
-            <a style="text-decoration: inherit; color: inherit;" href="{{ $inst.Url }}">{{ $inst.Name }}<svg
-                        id="Ebene_1"
-                        data-name="Ebene 1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 80 80"
-                        width="40"
-                        height="40"
-                >
-                    <defs><style>.cls-1{fill:#e6e6e6;}</style></defs><polygon class="cls-1" points="61.44 63.11 16.18 63.11 16.18 20.45 16.18 19.26 47.18 19.26 47.18 17.32 14.18 17.32 14.18 19.26 14.18 19.26 14.18 63.11 14.18 63.11 14.18 65.05 60.2 65.05 63.43 65.05 63.43 65.01 63.44 65.01 63.44 33.2 61.44 33.2 61.44 63.11"/><polygon class="cls-1" points="63.8 14.95 51.65 14.95 51.65 16.97 62.29 16.97 37.55 41.04 38.96 42.49 63.8 18.33 63.8 29.12 65.82 29.12 65.82 16.97 65.82 14.95 63.8 14.95"/>
-                </svg></a>
-        </div>
-        <div id="content-image"><img src="https://cms.basel-collections.ch/assets/{{ .Collection.Image }}?fit=inside&width=1200&height=600" /></div>
-        <div id="content">
-            <div id="content-image-blocker"></div>
-            <div id="content-text">
-                {{ .Collection.Description | raw }}
-            </div>
-        </div>
-        <div id="pinkblocker"></div>
-        <div id="hinweis">
-            {{ .Collection.Hinweis | raw }}
-
-            <p>
-                {{ range $t := .Collection.GetTags }}
-            <div class="tags"><a href="../..?tag={{ $t.Id }}">#{{ $t.Tag }}</a></div><br />
-            {{ end }}
-            </p>
-        </div>
-
-
-        <div id="content-large-impressum" class="type-impressum">
-            <div class="text pos-middle">
+        <div id="menu-4" class="cell box1"></div>
+        {{ range $key, $box := .GridLarge }}
+            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if (eq $box.Type "news") }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+                <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
+                    {{ $box.Content.GetTitle }}
+                </div>
+            </a>
+        {{ end }}
+        <div id="content-large-impressum" class="type-{{ .ImpressumLarge.Type }}">
+            <div class="text pos-{{ index .ImpressumLarge.Scheme "vertical-align" }}">
                 Impressum | Datenschutz | Informationen<br />
                 (c) 2021 Basel Collections
             </div>
         </div>
 
-        <div id="content-small-impressum" class="type-impressum">
-            <div class="text pos-middle">
+        {{ range $key, $box := .GridSmall }}
+            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if eq $box.Type "news" }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+                <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
+                    {{ $box.Content.GetTitle }}
+                </div>
+            </a>
+        {{ end }}
+        <div id="content-small-impressum" class="type-{{ .ImpressumSmall.Type }}">
+            <div class="text pos-{{ index .ImpressumSmall.Scheme "vertical-align" }}">
                 Impressum | Datenschutz | Informationen<br />
                 (c) 2021 Basel Collections
             </div>
@@ -335,6 +330,6 @@
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="../static/js/base.js"></script>
+<script src="static/js/base.js"></script>
 </body>
 </html>

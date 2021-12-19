@@ -44,6 +44,18 @@ type CollectionsResult struct {
 	Errors []*Error      `json:"errors"`
 }
 
+func (c *Collection) GetId() int64    { return c.Id }
+func (c *Collection) GetDate() string { return "" }
+func (c *Collection) GetUrl() string  { return c.Url }
+func (c *Collection) GetInst() string {
+	inst, err := c.GetInstitution()
+	if err != nil {
+		return err.Error()
+	}
+	return inst.Name
+}
+func (c *Collection) GetTitle() string { return c.Title }
+
 func (c *Collection) GetTags() ([]*Tag, error) {
 	list := []int64{}
 	for _, ct := range c.Tags {

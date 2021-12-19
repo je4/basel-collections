@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
+func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 	var err error
 	detailValues := url.Values{}
 
@@ -56,6 +56,10 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte(fmt.Sprintf("cannot get collections: %v", err)))
 		return
 	}
+	var contents = []Content{}
+	for _, c := range colls {
+		contents = append(contents, c)
+	}
 	tags, err := s.dir.GetTags()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -81,69 +85,51 @@ func (s *Server) detailHandler(w http.ResponseWriter, req *http.Request) {
 		}
 	*/
 
-	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, colls)
-	gridSmall, _ := buildGrid(GRIDSMALL, colls)
+	gridLarge, _ := buildGrid(GRIDLARGE, contents)
+	gridSmall, _ := buildGrid(GRIDSMALL, contents)
 
 	var theBoxLarge Grid
 	for _, box := range gridLarge {
-		if box.Id == collection {
+		if box.Content.GetId() == collection {
 			theBoxLarge = box
 			break
 		}
 	}
 	var theBoxSmall Grid
 	for _, box := range gridSmall {
-		if box.Id == collection {
+		if box.Content.GetId() == collection {
 			theBoxSmall = box
 			break
 		}
-	}
-
-	impressumLarge := &Impressum{
-		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
-		Type:   "impressum",
-		Scheme: IMPRESSUM,
-		VAlign: "middle",
-		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
-	}
-	impressumSmall := &Impressum{
-		Id: 0, Left: 1, Cols: 8, Top: 14, Rows: 3,
-		Type:   "impressum",
-		Scheme: IMPRESSUM,
-		VAlign: "middle",
-		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
 	}
 
 	if s.templateReload {
 		s.InitTemplates()
 	}
 
-	tpl := s.templates["detail"]
 	s.templateMutex.RLock()
 	defer s.templateMutex.RUnlock()
+	tpl := s.templates["collection"]
 	if err := tpl.Execute(w, struct {
-		ImpressumLarge, ImpressumSmall *Impressum
-		Tags                           []*directus.Tag
-		Institutions                   []*directus.Institution
-		Collections                    []*directus.Collection
-		Institution                    int64
-		Tag                            int64
-		BoxLarge                       Grid
-		BoxSmall                       Grid
-		Collection                     *directus.Collection
-		DetailParam                    string
+		Tags         []*directus.Tag
+		Institutions []*directus.Institution
+		Collections  []*directus.Collection
+		Institution  int64
+		Tag          int64
+		BoxLarge     Grid
+		BoxSmall     Grid
+		Collection   *directus.Collection
+		DetailParam  string
 	}{
-		ImpressumLarge: impressumLarge,
-		ImpressumSmall: impressumSmall,
-		Collections:    colls,
-		Tags:           tags,
-		Institutions:   institutions,
-		Tag:            tag,
-		Institution:    institution,
-		BoxLarge:       theBoxLarge,
-		BoxSmall:       theBoxSmall,
-		Collection:     theCollection,
-		DetailParam:    "?" + detailValues.Encode(),
+		Collections:  colls,
+		Tags:         tags,
+		Institutions: institutions,
+		Tag:          tag,
+		Institution:  institution,
+		BoxLarge:     theBoxLarge,
+		BoxSmall:     theBoxSmall,
+		Collection:   theCollection,
+		DetailParam:  "?" + detailValues.Encode(),
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

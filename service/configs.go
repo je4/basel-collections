@@ -1,9 +1,5 @@
 package service
 
-import (
-	"github.com/je4/basel-collections/v2/directus"
-)
-
 const darkorchid = "#7b458d"
 const darkorchid1 = "#69008B"
 const darkgoldenrod = "#F29F05"
@@ -34,6 +30,35 @@ var SCHEMES = map[int]map[string]string{
 }
 
 var IMPRESSUM = map[string]string{"color": black, "background-color": darkgoldenrod, "font-family": fontFamilySansSerif, "font-style": "italic", "vertical-align": "middle"}
+
+var NEWSSMALL = []Grid{
+	{Id: 0, Left: 1, Cols: 4, Top: 2, Rows: 3, Type: BoxNews, Scheme: SCHEMES[3], VAlign: top},   // 1
+	{Id: 0, Left: 5, Cols: 4, Top: 3, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: top},   // 1
+	{Id: 0, Left: 1, Cols: 1, Top: 5, Rows: 3, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top},  // 1
+	{Id: 0, Left: 2, Cols: 3, Top: 5, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: top},   // 1
+	{Id: 0, Left: 5, Cols: 4, Top: 4, Rows: 3, Type: BoxCell, Scheme: SCHEMES[6], VAlign: top},   // 1
+	{Id: 0, Left: 1, Cols: 4, Top: 6, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: top},   // 1
+	{Id: 0, Left: 5, Cols: 1, Top: 7, Rows: 2, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top},  // 1
+	{Id: 0, Left: 6, Cols: 3, Top: 7, Rows: 4, Type: BoxCell, Scheme: SCHEMES[1], VAlign: top},   // 1
+	{Id: 0, Left: 1, Cols: 2, Top: 9, Rows: 3, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top},  // 1
+	{Id: 0, Left: 3, Cols: 3, Top: 9, Rows: 3, Type: BoxCell, Scheme: SCHEMES[6], VAlign: top},   // 1
+	{Id: 0, Left: 6, Cols: 3, Top: 11, Rows: 2, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top}, // 1
+	{Id: 0, Left: 1, Cols: 5, Top: 12, Rows: 3, Type: BoxCell, Scheme: SCHEMES[4], VAlign: top},  // 1
+	{Id: 0, Left: 3, Cols: 3, Top: 13, Rows: 3, Type: BoxCell, Scheme: SCHEMES[2], VAlign: top},  // 1
+	{Id: 0, Left: 5, Cols: 1, Top: 14, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top}, // 1
+}
+
+var NEWSLARGE = []Grid{
+	{Id: 0, Left: 1, Cols: 4, Top: 2, Rows: 7, Type: BoxNews, Scheme: SCHEMES[3], VAlign: top},   // 1
+	{Id: 0, Left: 5, Cols: 4, Top: 2, Rows: 7, Type: BoxCell, Scheme: SCHEMES[6], VAlign: top},   // 2
+	{Id: 0, Left: 9, Cols: 4, Top: 4, Rows: 7, Type: BoxCell, Scheme: SCHEMES[5], VAlign: top},   // 3
+	{Id: 0, Left: 1, Cols: 5, Top: 9, Rows: 6, Type: BoxCell, Scheme: SCHEMES[1], VAlign: top},   // 4
+	{Id: 0, Left: 6, Cols: 3, Top: 9, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top},  // 5
+	{Id: 0, Left: 9, Cols: 4, Top: 9, Rows: 6, Type: BoxCell, Scheme: SCHEMES[4], VAlign: top},   // 6
+	{Id: 0, Left: 1, Cols: 2, Top: 15, Rows: 6, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: top}, // 7
+	{Id: 0, Left: 3, Cols: 6, Top: 15, Rows: 6, Type: BoxCell, Scheme: SCHEMES[1], VAlign: top},  // 8
+	{Id: 0, Left: 14, Cols: 4, Top: 4, Rows: 3, Type: BoxBlank, Scheme: SCHEMES[6], VAlign: top}, // 9
+}
 
 var GRIDSMALL = []Grid{
 	{Id: 0, Left: 1, Cols: 3, Top: 2, Rows: 5, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
@@ -70,7 +95,7 @@ var GRIDLARGE = []Grid{
 	{Id: 0, Left: 9, Cols: 1, Top: 10, Rows: 3, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 20
 }
 
-func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int64) {
+func buildGrid(template []Grid, collections []Content) ([]Grid, int64) {
 	var grid []Grid
 
 	var entries int64 = int64(len(collections))
@@ -91,7 +116,7 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 	height -= firstRow
 	for count < entries && nr < 300 {
 		var h Grid = template[nr%boxes]
-		var text = ""
+		var content Content = &StaticContent{}
 		var id int64 = 0
 		var iter = (nr - (nr % boxes)) / boxes
 		var top = h.Top + iter*height
@@ -104,15 +129,13 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 			switch template[nr%boxes].Type {
 			case BoxBlank:
 			case BoxNews:
-				text = "News"
+				content = &StaticContent{title: "News"}
 			default:
-				text = collections[count].Title // get Title
-				//text = fmt.Sprintf("%s #%v", text, collections[count].Sort)
-				id = collections[count].Id // get ID
+				content = collections[count]
 				count++
 			}
 		}
-		h.Text = text
+		h.Content = content
 		h.Id = id
 		n := h.Top + h.Rows
 		if lastRow < n {
@@ -136,9 +159,9 @@ func buildGrid(template []Grid, collections []*directus.Collection) ([]Grid, int
 			}
 		}
 		h.Top = top
-		h.Text = ""
+		h.Content = &StaticContent{}
 		if h.Type == BoxNews {
-			h.Text = "News"
+			h.Content = &StaticContent{title: "News"}
 		}
 		n := h.Top + h.Rows
 		if lastRow < n {

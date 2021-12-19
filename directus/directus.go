@@ -12,6 +12,7 @@ type Directus struct {
 	tags         []*Tag
 	institutions []*Institution
 	locations    []*Location
+	news         []*News
 	mutex        sync.Mutex
 	lastAccess   time.Time
 	cacheTime    time.Duration
@@ -37,5 +38,6 @@ func NewDirectus(baseurl, token string, cacheTime time.Duration) *Directus {
 func (d *Directus) clearCache() {
 	d.collections = nil
 	d.tags = nil
+	d.news = nil
 	d.institutions = nil
 }

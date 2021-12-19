@@ -61,14 +61,26 @@ body {
 
 .text {
   padding: 3px;
-//  font-family: 'IBM Plex Sans', sans-serif;
-//  font-size: 12px;
+  //  font-family: 'IBM Plex Sans', sans-serif;
+  //  font-size: 12px;
+  /* visibility: hidden; */
+}
+
+.boxhead {
+  padding: 3px;
+  font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 18px;
   /* visibility: hidden; */
 }
 
 .pos-top {
   position: absolute;
   top: 0;
+}
+
+.pos-top2 {
+  position: absolute;
+  top: 35px ;
 }
 
 .pos-middle {

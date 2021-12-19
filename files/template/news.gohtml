@@ -216,7 +216,7 @@
             </h3>
             {{ range $inst := .Institutions }}
             <div class="filter-entry">
-                <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
+                <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="../?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
             </div>
             {{ end }}
 
@@ -225,7 +225,7 @@
             </h3>
             {{ range $t := .Tags }}
             <div class="filter-entry">
-                <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
+                <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="../?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
             </div>
             {{ end }}
         </div>
@@ -300,9 +300,13 @@
         <div id="menu-3" class="cell box3"></div>
         <div id="menu-4" class="cell box1"></div>
         {{ range $key, $box := .GridLarge }}
-            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Id 0 }} href="detail/{{ $box.Id }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
-                <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
-                    {{ $box.Text }}
+            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Content.GetId 0 }} href="{{ $box.Content.GetUrl }}" target="_blank" style="cursor: pointer;"{{ end }}>
+                {{ if ne $box.Type "news" }}<div class="boxhead pos-top">
+                    {{ $box.Content.GetDate }}<br />
+                    {{ $box.Content.GetInst }}
+                </div>{{ end }}
+                <div class="text pos-top{{ if ne $box.Type "news" }}2{{ end }}">
+                    {{ $box.Content.GetTitle }}
                 </div>
             </a>
         {{ end }}
@@ -314,9 +318,13 @@
         </div>
 
         {{ range $key, $box := .GridSmall }}
-            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Id 0 }} href="detail/{{ $box.Id }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
-                <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
-                    {{ $box.Text }}
+            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+                {{ if ne $box.Type "news" }}<div class="boxhead pos-top">
+                    {{ $box.Content.GetDate }}<br />
+                    {{ $box.Content.GetInst }}
+                </div>{{ end }}
+                <div class="text pos-top{{ if ne $box.Type "news" }}2{{ end }}">
+                    {{ $box.Content.GetTitle }}
                 </div>
             </a>
         {{ end }}

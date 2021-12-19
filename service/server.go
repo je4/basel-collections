@@ -80,30 +80,41 @@ func (s *Server) InitTemplates() error {
 	defer s.templateMutex.Unlock()
 
 	if s.templateFiles != "" {
-		file := path.Join(s.templateFiles, "root.gohtml")
-		tpl, err := template.New("root.gohtml").Funcs(funcs).ParseFiles(file)
+		file := path.Join(s.templateFiles, "collections.gohtml")
+		tpl, err := template.New("collections.gohtml").Funcs(funcs).ParseFiles(file)
 		if err != nil {
-			return errors.Wrapf(err, "cannot parse template %s - %s:", "root", file)
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "collections", file)
 		}
-		s.templates["root"] = tpl
-		file = path.Join(s.templateFiles, "detail.gohtml")
-		tpl, err = template.New("detail.gohtml").Funcs(funcs).ParseFiles(file)
+		s.templates["collections"] = tpl
+		file = path.Join(s.templateFiles, "news.gohtml")
+		tpl, err = template.New("news.gohtml").Funcs(funcs).ParseFiles(file)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "news", file)
+		}
+		s.templates["news"] = tpl
+		file = path.Join(s.templateFiles, "collection.gohtml")
+		tpl, err = template.New("collection.gohtml").Funcs(funcs).ParseFiles(file)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", file)
 		}
-		s.templates["detail"] = tpl
+		s.templates["collection"] = tpl
 
 	} else {
-		tpl, err := template.New("root").Funcs(funcs).Parse(files.RootTemplate)
+		tpl, err := template.New("collections").Funcs(funcs).Parse(files.CollectionsTemplate)
 		if err != nil {
-			return errors.Wrapf(err, "cannot parse template %s - %s:", "root", files.RootTemplate)
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "collections", files.CollectionsTemplate)
 		}
-		s.templates["root"] = tpl
-		tpl, err = template.New("detail").Funcs(funcs).Parse(files.DetailTemplate)
+		s.templates["collections"] = tpl
+		tpl, err = template.New("news").Funcs(funcs).Parse(files.NewsTemplate)
 		if err != nil {
-			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.DetailTemplate)
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "news", files.NewsTemplate)
 		}
-		s.templates["detail"] = tpl
+		s.templates["news"] = tpl
+		tpl, err = template.New("collection").Funcs(funcs).Parse(files.CollectionTemplate)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.CollectionTemplate)
+		}
+		s.templates["collection"] = tpl
 	}
 	return nil
 }
@@ -146,8 +157,9 @@ func (s *Server) ListenAndServe(cert, key string) error {
 		),
 	).Methods("GET")
 
-	router.HandleFunc("/", s.rootHandler).Methods("GET")
-	router.HandleFunc("/detail/{collection}", s.detailHandler).Methods("GET")
+	router.HandleFunc("/", s.collectionsHandler).Methods("GET")
+	router.HandleFunc("/news", s.newsHandler).Methods("GET")
+	router.HandleFunc("/detail/{collection}", s.collectionHandler).Methods("GET")
 
 	loggedRouter := handlers.CombinedLoggingHandler(s.accessLog, handlers.ProxyHeaders(router))
 	addr := net.JoinHostPort(s.host, s.port)
