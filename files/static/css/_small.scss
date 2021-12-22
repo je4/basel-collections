@@ -8,6 +8,16 @@
     width: 0;
   }
 
+.navbar-brand {
+  font-size: 2rem;
+}
+
+
+.hamburger-icon {
+  width: 80px;
+  height: 80px
+}
+
   #content {
     font-family: $font-family-sans-serif; // $font-family-mono;
     font-weight: $font-weight;
@@ -67,8 +77,8 @@
 
   #title-box {
     font-family: $font-family-mono;
-    font-weight: $font-weight-bold;
-    font-size: 38pt;
+    font-weight: $font-weight-medium;
+    font-size: 28px;
     color: $white;
     grid-column: 1 / span 8;
     grid-row: 8 / span 1;
@@ -148,12 +158,42 @@
     grid-row: 11 / span 1;
   }
 
+  .extlink {
+    text-decoration: inherit;
+    color: inherit;
+  }
+
   #hinweis {
     font-family: $font-family-mono;
-    font-weight: $font-weight-bold;
-    font-size: 33pt;
+    font-weight: $font-weight-medium;
+    font-size: 18pt;
     color: $white;
     grid-column: 3 / span 6;
     grid-row: 11 / span 1;
     padding-left: 10px;
   }
+
+.tags {
+  font-family: $font-family-mono;
+  font-weight: $font-weight-medium;
+  font-size: 18pt;
+  color: $deeppink;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:link {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:hover {
+    background-color: inherit;
+  }
+  a.selected:hover {
+    background-color: inherit;
+  }
+  a.selected {
+    background-color: inherit;
+  }
+
+}
