@@ -99,13 +99,14 @@ body {
 .hamburger {
   position: absolute;
   top: 0;
-  right: 25px;
-  margin-right: 25px;
+  right: 0px;
+  margin-right: 5px;
+  transform: scale(-1, 1);
 }
 
 #hamburger-content {
   padding: 0;
-  background-color: $menu-background;
+  background-color: $hamburger-background;
   z-index: 50;
   visibility: hidden;
 }
@@ -139,11 +140,11 @@ body {
   color: $white;
   background-color: $dark;
   > div {
-    font-family: $font-family-serif;
-    font-weight: $font-weight;
-    font-size: 24px;
-    position: absolute;
-    top: 0;
+    //font-family: $font-family-serif;
+    //font-weight: $font-weight;
+    //font-size: 24px;
+    //position: absolute;
+    //bottom: 0;
   }
 }
 
@@ -183,13 +184,51 @@ body {
   }
 }
 
-
+.extlink {
+  text-decoration: inherit;
+  color: white;
+}
+a.extlink:hover {
+  color: $deeppink;
+}
 
 #menu-1-content {
-  padding: 0;
-  background-color: $menu-background;
+  padding: 0 0 0 10px;
+  background-color: $menu-1-background;
   z-index: 50;
   visibility: hidden;
+
+  div.filter-entry {
+    a:hover {
+      background-color: $darkgoldenrod;
+      font-weight: 500;
+    }
+    a.selected {
+      background-color: $darkgoldenrod;
+      font-weight: 500;
+    }
+  }
+
+}
+
+#menu-2-content {
+  padding: 0 10px 0 0;
+  background-color: $menu-2-background;
+  z-index: 50;
+  visibility: hidden;
+  text-align: right;
+
+  div.filter-entry {
+    a:hover {
+      background-color: $darkorchid;
+      font-weight: 500;
+    }
+    a.selected {
+      background-color: $darkorchid;
+      font-weight: 500;
+    }
+  }
+
 }
 
 .menu-content {
@@ -218,18 +257,13 @@ body {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 15px;
-  }
-  a:hover {
-    background-color: $darkgoldenrod;
-    font-weight: 500;
+    padding-right: 15px;
+    white-space: nowrap;
+
   }
   a.selected:hover {
     background-color: inherit;
     font-weight: 400;
-  }
-  a.selected {
-    background-color: $darkgoldenrod;
-    font-weight: 500;
   }
   font-family: $font-family-sans-serif;
   font-size: 20px;
@@ -237,7 +271,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;

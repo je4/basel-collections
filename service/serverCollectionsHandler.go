@@ -18,18 +18,46 @@ type Impressum struct {
 
 func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	var err error
+	var selected string
 	detailValues := url.Values{}
+
+	tags, err := s.dir.GetTags()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Header().Set("Content-type", "text/plain")
+		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
+		return
+	}
+	institutions, err := s.dir.GetInstitutions()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Header().Set("Content-type", "text/plain")
+		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
+		return
+	}
 
 	var tag, institution int64
 	tagStr := req.URL.Query().Get("tag")
 	if tagStr != "" {
 		detailValues.Add("tag", tagStr)
 		tag, err = strconv.ParseInt(tagStr, 10, 64)
+		for _, t := range tags {
+			if t.Id == tag {
+				selected = t.Tag
+				break
+			}
+		}
 	}
 	institutionStr := req.URL.Query().Get("institution")
 	if institutionStr != "" {
 		detailValues.Add("institution", institutionStr)
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
+		for _, i := range institutions {
+			if i.Id == institution {
+				selected = i.Name
+				break
+			}
+		}
 	}
 
 	var colls []*directus.Collection
@@ -51,20 +79,6 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	var contents = []Content{}
 	for _, c := range colls {
 		contents = append(contents, c)
-	}
-	tags, err := s.dir.GetTags()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
-		return
-	}
-	institutions, err := s.dir.GetInstitutions()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
-		return
 	}
 
 	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, contents)
@@ -101,6 +115,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Collections                    []*directus.Collection
 		Institution                    int64
 		Tag                            int64
+		Selected                       string
 		DetailParam                    string
 	}{
 		GridLarge:      gridLarge,
@@ -112,6 +127,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Institutions:   institutions,
 		Tag:            tag,
 		Institution:    institution,
+		Selected:       selected,
 		DetailParam:    "?" + detailValues.Encode(),
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

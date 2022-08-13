@@ -127,7 +127,12 @@
     grid-row: 1 / span 1;
   }
 
-  #menu-3 {
+  #menu-2-content {
+    grid-column: 1 / span 6;
+    grid-row: 2 / span 16;
+  }
+
+#menu-3 {
     visibility: hidden;
   }
 

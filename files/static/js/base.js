@@ -12,6 +12,10 @@ window.swapVisibility = function (el) {
     }
 }
 
+window.hide = function (el) {
+    el.style.setProperty('visibility', 'hidden');
+}
+
 window.hamburger = function (open, closed, content ) {
     let content_el = document.getElementById(content);
     if( content_el.style.getPropertyValue('visibility') !== 'visible' ) {

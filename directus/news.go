@@ -129,7 +129,8 @@ func (d *Directus) loadNews() error {
 		if d.news != nil {
 			d.clearCache()
 		}
-		urlStr := fmt.Sprintf("%s/items/news?filter[status][_eq]=published&filter[publish_date][_lte]=%s&filter[end][_gte]=%s&limit=-1&fields=*,type.*", d.baseurl, time.Now().Format("2006-01-02"), time.Now().Format("2006-01-02"))
+		//		urlStr := fmt.Sprintf("%s/items/news?filter[status][_eq]=published&filter[publish_date][_lte]=%s&filter[end][_gte]=%s&limit=-1&fields=*,type.*", d.baseurl, time.Now().Format("2006-01-02"), time.Now().Format("2006-01-02"))
+		urlStr := fmt.Sprintf("%s/items/news?filter[status][_eq]=published&filter[publish_date][_lte]=%s&limit=-1&fields=*,type.*", d.baseurl, time.Now().Format("2006-01-02"))
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {
 			return errors.Wrapf(err, "cannot create request %s", urlStr)

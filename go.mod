@@ -5,7 +5,7 @@ go 1.17
 replace github.com/je4/basel-collections/v2 => ./
 
 require (
-	github.com/BurntSushi/toml v0.4.1
+	github.com/BurntSushi/toml v1.2.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/bluele/gcache v0.0.2
 	github.com/go-sql-driver/mysql v1.6.0
@@ -19,16 +19,16 @@ require (
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
-	github.com/blend/go-sdk v1.20211204.3 // indirect
-	github.com/felixge/httpsnoop v1.0.2 // indirect
-	github.com/google/uuid v1.1.2 // indirect
+	github.com/blend/go-sdk v1.20220411.3 // indirect
+	github.com/felixge/httpsnoop v1.0.3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
-	github.com/imdario/mergo v0.3.12 // indirect
+	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/machinebox/progress v0.2.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/pkg/sftp v1.13.4 // indirect
-	golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b // indirect
-	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
+	github.com/pkg/sftp v1.13.5 // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 )
