@@ -7,6 +7,9 @@ import "embed"
 //go:embed static/css/basel-collections.css.map
 var StaticFS embed.FS
 
+//go:embed template/header_content.inc.gohtml
+var HeaderContentIncTemplate string
+
 //go:embed template/collections.gohtml
 var CollectionsTemplate string
 

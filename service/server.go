@@ -80,37 +80,43 @@ func (s *Server) InitTemplates() error {
 	defer s.templateMutex.Unlock()
 
 	if s.templateFiles != "" {
+		header := path.Join(s.templateFiles, "header_content.inc.gohtml")
 		file := path.Join(s.templateFiles, "collections.gohtml")
-		tpl, err := template.New("collections.gohtml").Funcs(funcs).ParseFiles(file)
+		tpl, err := template.New("collections.gohtml").Funcs(funcs).ParseFiles(header, file)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "collections", file)
 		}
 		s.templates["collections"] = tpl
 		file = path.Join(s.templateFiles, "news.gohtml")
-		tpl, err = template.New("news.gohtml").Funcs(funcs).ParseFiles(file)
+		tpl, err = template.New("news.gohtml").Funcs(funcs).ParseFiles(header, file)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "news", file)
 		}
 		s.templates["news"] = tpl
 		file = path.Join(s.templateFiles, "collection.gohtml")
-		tpl, err = template.New("collection.gohtml").Funcs(funcs).ParseFiles(file)
+		tpl, err = template.New("collection.gohtml").Funcs(funcs).ParseFiles(header, file)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", file)
 		}
 		s.templates["collection"] = tpl
 
 	} else {
-		tpl, err := template.New("collections").Funcs(funcs).Parse(files.CollectionsTemplate)
+		tpl, err := template.New("header_content.inc.gohtml").Funcs(funcs).Parse(files.HeaderContentIncTemplate)
+		if err != nil {
+			return errors.Wrapf(err, "cannot parse template %s - %s:", "collections", files.HeaderContentIncTemplate)
+		}
+		s.templates["header_content"] = tpl
+		tpl, err = template.New("collections.gohtml").Funcs(funcs).Parse(files.CollectionsTemplate)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "collections", files.CollectionsTemplate)
 		}
 		s.templates["collections"] = tpl
-		tpl, err = template.New("news").Funcs(funcs).Parse(files.NewsTemplate)
+		tpl, err = template.New("news.gohtml").Funcs(funcs).Parse(files.NewsTemplate)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "news", files.NewsTemplate)
 		}
 		s.templates["news"] = tpl
-		tpl, err = template.New("collection").Funcs(funcs).Parse(files.CollectionTemplate)
+		tpl, err = template.New("collection.gohtml").Funcs(funcs).Parse(files.CollectionTemplate)
 		if err != nil {
 			return errors.Wrapf(err, "cannot parse template %s - %s:", "detail", files.CollectionTemplate)
 		}

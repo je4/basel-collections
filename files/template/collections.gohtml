@@ -104,7 +104,9 @@
                         <style
                                 id="style2"
                                 type="text/css">
-                            transform: scale(-1, 1);
+                            {
+                                transform: scale(-1, 1);
+                            }
                             .st0{fill:#EC339B;}
                             .st1{fill:#FCE9F3;}
                         </style>
@@ -207,98 +209,13 @@
         </div>
     </div>
     <div class="main-base">
-        <div id="menu-1-content" class="menu-content">
-            <h3>
-                Institutionen
-            </h3>
-            {{ range $inst := .Institutions }}
-                <div class="filter-entry">
-                    <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
-                </div>
-            {{ end }}
-        </div>
-        <div id="menu-2-content" class="menu-content">
-            <h3>
-                Tags
-            </h3>
-            {{ range $t := .Tags }}
-                <div class="filter-entry">
-                    <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
-                </div>
-            {{ end }}
-        </div>
-        <div id="hamburger-content" class="hamburger-content">
-            <h3 >
-                <div class="filter-entry">
-                    <a class="" href="/">Home</a>
-                </div>
-                <div class="filter-entry">
-                    <a class="" href="/">News</a>
-                </div>
-                <div class="filter-entry">
-                    <a class="" href="/">Impressum</a>
-                </div>
-            </h3>
-        </div>
-        <div id="menu-1" class="menu box5">
-            <a href="javascript:window.hide(document.getElementById('menu-2-content'));window.swapVisibility(document.getElementById('menu-1-content'));">
-                <div style="margin: 0px; padding: 5px; width: 100%; height: 100%;">
-                    <svg
-                            viewBox="0 0 80 80"
-                            width="60px"
-                            height="60px"
-                            y="0px"
-                            x="0px"
-                            id="Ebene_1"
-                            version="1.1">
-                        <style
-                                id="style2"
-                                type="text/css">
-                            .st0{fill:#FCE9F3;}
-                        </style>
-                        <g
-                                id="g8">
-                            <path
-                                    id="path4"
-                                    d="M35.7,32c-0.5-4-3.9-7.1-7.9-7.1S20.4,28,19.9,32h-7.8v2h7.8c0.5,4,3.9,7.1,7.9,7.1s7.4-3.1,7.9-7.1h31.1v-2   H35.7z M27.9,39c-3.3,0-5.9-2.7-5.9-6s2.7-6,5.9-6s5.9,2.7,5.9,6S31.1,39,27.9,39z"
-                                    class="st0" />
-                            <path
-                                    id="path6"
-                                    d="M59,47.1c-0.5-4-3.9-7.1-7.9-7.1c-4.1,0-7.4,3.1-7.9,7.1H12.1v2h31.1c0.5,4,3.9,7.1,7.9,7.1   c4.1,0,7.4-3.1,7.9-7.1h7.8v-2H59z M51,54c-3.3,0-5.9-2.7-5.9-6c0-3.3,2.7-6,5.9-6c3.3,0,5.9,2.7,5.9,6C56.9,51.4,54.3,54,51,54z"
-                                    class="st0" />
-                        </g>
-                    </svg>
-                </div>
-            </a>
-        </div>
-        <div id="menu-2" class="menu box6">
-            <a href="javascript:window.hide(document.getElementById('menu-1-content'));window.swapVisibility(document.getElementById('menu-2-content'));">
-                <div style="margin: 0px; padding: 5px; width: 100%; height: 100%;">
-                    <svg
-                            viewBox="0 0 80 80"
-                            width="60px"
-                            height="60px"
-                            y="0px"
-                            x="0px"
-                            id="Ebene_1"
-                            version="1.1">
-                        <style
-                                id="style2"
-                                type="text/css">
-                            .st0{fill:#FCE9F3;}
-                        </style>
-                        <path
-                                id="path4"
-                                d="M41.9,39.5c0.9-1.9,1.5-4,1.5-6.2c0-7.6-6.2-13.8-13.8-13.8s-13.8,6.2-13.8,13.8S22,47.1,29.6,47.1  c4.5,0,8.6-2.2,11.1-5.6L57.1,53l1.3-1.9L41.9,39.5z M29.6,45.1c-6.5,0-11.8-5.3-11.8-11.8s5.3-11.8,11.8-11.8s11.8,5.3,11.8,11.8  S36.1,45.1,29.6,45.1z"
-                                class="st0" />
-                    </svg>
-                </div>
-            </a>
-        </div>
+
+        {{template "header_content" . }}
         <div id="menu-3" class="cell box3">
             <div class="">{{.Selected}}</div>
         </div>
         <div id="menu-4" class="cell box1"></div>
+
         {{ range $key, $box := .GridLarge }}
             <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if (eq $box.Type "news") }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
                 <div class="text pos-{{ index $box.Scheme "vertical-align" }}">

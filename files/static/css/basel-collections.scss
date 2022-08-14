@@ -278,6 +278,14 @@ a.extlink:hover {
   background-color: #7B1FA2;
 }
 
+#content-text a {
+  color: inherit;
+}
+
+#content-text a:hover {
+  color: inherit;
+}
+
 
 // Medium devices (tablets, 768px and up)
 @media (max-width: $media-breakpoint-1) {
