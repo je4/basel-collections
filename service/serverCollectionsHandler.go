@@ -117,6 +117,10 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Tag                            int64
 		Selected                       string
 		DetailParam                    string
+		LinkHome                       string
+		LinkNews                       string
+		LinkImpressum                  string
+		LinkCollection                 string
 	}{
 		GridLarge:      gridLarge,
 		GridSmall:      gridSmall,
@@ -129,6 +133,10 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Institution:    institution,
 		Selected:       selected,
 		DetailParam:    "?" + detailValues.Encode(),
+		LinkHome:       "",
+		LinkImpressum:  "impressum",
+		LinkNews:       "news",
+		LinkCollection: "detail",
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

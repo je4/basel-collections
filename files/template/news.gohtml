@@ -2,37 +2,40 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Basel Collections</title>
+    <title>Basel Collections - News</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="static/css/basel-collections.css" rel="stylesheet">
+    <link href="../static/css/basel-collections.css" rel="stylesheet">
 
     <style>
         @media (max-width: 768px) {
-        {{ range $key, $box := .GridSmall }}
-            #content-small-{{ $key }} {
-                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
-                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
-            {{ range $tag, $val := $box.Scheme }}
-                {{ $tag }}: {{ $val }};{{ end }}
+            #title-box {
+                grid-column: 1 / span 8;
             }
-        {{ end }}
-            #content-small-impressum {
-                grid-column: {{ .ImpressumSmall.Left }} / span {{ .ImpressumSmall.Cols }};
-                grid-row: {{ .ImpressumSmall.Top }} / span {{ .ImpressumSmall.Rows }};
-            {{ range $tag, $val := .ImpressumSmall.Scheme }}
-                {{ $tag }}: {{ $val }};{{ end }}
+
+            #title-small {
+                grid-column: 1 / span 3;
+                grid-row: 2 / span 3;
             }
-        {{ range $key, $box := .GridLarge }}
-            #content-large-{{ $key }} {
-                position: absolute;
-                top: 0;
-                left: 0;
+
+            #pinkbox {
                 visibility: hidden;
-                height: 0px;
-                width: 0px;
             }
-        {{ end }}
+
+            #content {
+              grid-row: 6 / span 1;
+            }
+
+
+            #news-black {
+                visibility: hidden;
+            }
+            #content-small-impressum {
+                grid-column: 1 / span 8;
+                grid-row: 7 / span 1;
+            {{ range $tag, $val := .ImpressumSmall.Scheme }}
+            {{ $tag }}: {{ $val }};{{ end }}
+            }
             #content-large-impressum {
                 position: absolute;
                 top: 0;
@@ -43,30 +46,32 @@
             }
         }
         @media (min-width: 769px) {
-        {{ range $key, $box := .GridLarge }}
-            #content-large-{{ $key }} {
-                grid-column: {{ $box.Left }} / span {{ $box.Cols }};
-                grid-row: {{ $box.Top }} / span {{ $box.Rows }};
-            {{ range $tag, $val := $box.Scheme }}
-            {{ $tag }}: {{ $val }};{{ end }}
+            #title-large {
+                grid-column: 1 / span 2;
+                grid-row: 2 / span 3;
             }
-        {{ end }}
+
+            #pinkbox {
+                grid-column: 10 / span 3;
+                grid-row: 2 / span 3;
+                background-color: #EC339B; // deeppink
+            }
+
+            #content {
+                grid-row: 5;
+                grid-column: 3 / span 10;
+            }
+
+            #news-black {
+                grid-column: 5 / span 6;
+                grid-row: 1 / span 1;
+            }
             #content-large-impressum {
                 grid-column: {{ .ImpressumLarge.Left }} / span {{ .ImpressumLarge.Cols }};
-                grid-row: {{ .ImpressumLarge.Top }} / span {{ .ImpressumLarge.Rows }};
+                grid-row: 6 / span {{ .ImpressumLarge.Rows }};
             {{ range $tag, $val := .ImpressumLarge.Scheme }}
             {{ $tag }}: {{ $val }};{{ end }}
             }
-        {{ range $key, $box := .GridSmall }}
-            #content-small-{{ $key }} {
-                position: absolute;
-                top: 0;
-                left: 0;
-                visibility: hidden;
-                height: 0px;
-                width: 0px;
-            }
-        {{ end }}
             #content-small-impressum {
                 position: absolute;
                 top: 0;
@@ -86,258 +91,183 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-black sticky-top">
-        <div class="container-fluid no-padding">
-            <a class="navbar-brand abs" href=".">
-                Basel<br />Collections
-            </a>
-            <a class="navbar-brand abs" href="javascript:window.hamburger('menu_open', 'menu_closed', 'hamburger-content');">
-                <div class="hamburger">
-                    <svg style="visibility: visible;"
-                         viewBox="0 0 140 140"
-                         width="120px"
-                         height="120px"
-                         y="0px"
-                         x="0px"
-                         id="menu_closed"
-                         version="1.1">
-                        <defs
-                                id="defs13" />
-                        <style
-                                id="style2"
-                                type="text/css">
-                            .st0{fill:#EC339B;}
-                            .st1{fill:#FCE9F3;}
-                        </style>
-                        <rect
-                                id="rect4"
-                                height="67.900002"
-                                width="8.6000004"
-                                class="st1"
-                                transform="scale(-1)"
-                                y="-103.2284"
-                                x="-22.804001" />
-                        <rect
-                                id="rect6"
-                                height="67.900002"
-                                width="8.6000004"
-                                class="st1"
-                                transform="scale(-1)"
-                                y="-103.2284"
-                                x="-51.796001" />
-                        <rect
-                                id="rect8"
-                                height="67.900002"
-                                width="8.6000004"
-                                class="st1"
-                                transform="scale(-1)"
-                                y="-103.2284"
-                                x="-84.133003" />
-                    </svg>
-                </div>
-                <div class="hamburger">
-                    <svg style="visibility: hidden;" viewBox="0 0 140 140"
-                         width="120px"
-                         height="120px"
-                         y="0px"
-                         x="0px"
-                         id="menu_open"
-                         version="1.1">
-                        <defs
-                                id="defs19" />
-                        <style
-                                id="style2"
-                                type="text/css">
-                            .st0{fill:#EC339B;}
-                            .st1{fill:#FCE9F3;}
-                        </style>
-                        <rect
-                                id="rect4"
-                                height="67.9"
-                                width="8.6"
-                                class="st0"
-                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 37.004 137.9033)"
-                                y="35"
-                                x="14.2" />
-                        <rect
-                                id="rect6"
-                                height="67.9"
-                                width="8.6"
-                                class="st0"
-                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 94.9959 137.9033)"
-                                y="35"
-                                x="43.2" />
-                        <rect
-                                id="rect8"
-                                height="49.7"
-                                width="8.6"
-                                class="st0"
-                                transform="matrix(6.123234e-17 -1 1 6.123234e-17 2.4334 198.3367)"
-                                y="73.1"
-                                x="96.1" />
-                        <rect
-                                id="rect10"
-                                height="67.9"
-                                width="8.6"
-                                class="st1"
-                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 74.1953 452.5284)"
-                                y="192.3"
-                                x="32.8" />
-                        <rect
-                                id="rect12"
-                                height="67.9"
-                                width="8.6"
-                                class="st1"
-                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 132.1872 452.5284)"
-                                y="192.3"
-                                x="61.8" />
-                        <rect
-                                id="rect14"
-                                height="67.9"
-                                width="8.6"
-                                class="st1"
-                                transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 192.1791 452.5284)"
-                                y="192.3"
-                                x="91.8" />
-                    </svg>
-                </div>
-            </a>
-        </div>
-    </nav>
-    <div style="visibility: hidden; position: absolute; ">
-        <div id="testbox" class="cell" style="position: relative; ">
-            <div id="testfield" class="text" style="position:absolute;"></div>
-        </div>
+<nav class="navbar navbar-expand-md navbar-dark bg-black sticky-top">
+    <div class="container-fluid no-padding">
+        <a class="navbar-brand abs" href="../">
+            Basel<br />Collections
+        </a>
+        <a class="navbar-brand abs" href="javascript:window.hamburger('menu_open', 'menu_closed', 'hamburger-content');">
+            <div class="hamburger">
+                <svg style="visibility: visible;"
+                     viewBox="0 0 140 140"
+                     y="0px"
+                     x="0px"
+                     id="menu_closed"
+                     version="1.1">
+                    <defs
+                            id="defs13" />
+                    <style
+                            id="style2"
+                            type="text/css">
+                        .st0{fill:#EC339B;}
+                        .st1{fill:#FCE9F3;}
+                    </style>
+                    <rect
+                            id="rect4"
+                            height="67.900002"
+                            width="8.6000004"
+                            class="st1"
+                            transform="scale(-1)"
+                            y="-103.2284"
+                            x="-22.804001" />
+                    <rect
+                            id="rect6"
+                            height="67.900002"
+                            width="8.6000004"
+                            class="st1"
+                            transform="scale(-1)"
+                            y="-103.2284"
+                            x="-51.796001" />
+                    <rect
+                            id="rect8"
+                            height="67.900002"
+                            width="8.6000004"
+                            class="st1"
+                            transform="scale(-1)"
+                            y="-103.2284"
+                            x="-84.133003" />
+                </svg>
+            </div>
+            <div class="hamburger">
+                <svg style="visibility: hidden;" viewBox="0 0 140 140"
+                     width="120px"
+                     height="120px"
+                     y="0px"
+                     x="0px"
+                     id="menu_open"
+                     version="1.1">
+                    <defs
+                            id="defs19" />
+                    <style
+                            id="style2"
+                            type="text/css">
+                        .st0{fill:#EC339B;}
+                        .st1{fill:#FCE9F3;}
+                    </style>
+                    <rect
+                            id="rect4"
+                            height="67.9"
+                            width="8.6"
+                            class="st0"
+                            transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 37.004 137.9033)"
+                            y="35"
+                            x="14.2" />
+                    <rect
+                            id="rect6"
+                            height="67.9"
+                            width="8.6"
+                            class="st0"
+                            transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 94.9959 137.9033)"
+                            y="35"
+                            x="43.2" />
+                    <rect
+                            id="rect8"
+                            height="49.7"
+                            width="8.6"
+                            class="st0"
+                            transform="matrix(6.123234e-17 -1 1 6.123234e-17 2.4334 198.3367)"
+                            y="73.1"
+                            x="96.1" />
+                    <rect
+                            id="rect10"
+                            height="67.9"
+                            width="8.6"
+                            class="st1"
+                            transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 74.1953 452.5284)"
+                            y="192.3"
+                            x="32.8" />
+                    <rect
+                            id="rect12"
+                            height="67.9"
+                            width="8.6"
+                            class="st1"
+                            transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 132.1872 452.5284)"
+                            y="192.3"
+                            x="61.8" />
+                    <rect
+                            id="rect14"
+                            height="67.9"
+                            width="8.6"
+                            class="st1"
+                            transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 192.1791 452.5284)"
+                            y="192.3"
+                            x="91.8" />
+                </svg>
+            </div>
+        </a>
     </div>
-    <div class="main-base">
-        <div id="menu-1-content" class="menu-content">
-            <h3>
-                Institutionen
-            </h3>
-            {{ range $inst := .Institutions }}
-            <div class="filter-entry">
-                <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="../?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
-            </div>
-            {{ end }}
-
-            <h3>
-                Tags
-            </h3>
-            {{ range $t := .Tags }}
-            <div class="filter-entry">
-                <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="../?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
-            </div>
-            {{ end }}
-        </div>
-        <div id="hamburger-content" class="hamburger-content">
-            <h3 >
-                <div class="filter-entry">
-                    <a class="" href="/">Home</a>
-                </div>
-                <div class="filter-entry">
-                    <a class="" href="/">News</a>
-                </div>
-                <div class="filter-entry">
-                    <a class="" href="/">Impressum</a>
-                </div>
-            </h3>
-        </div>
-        <div id="menu-1" class="menu box5">
-            <a href="javascript:window.swapVisibility(document.getElementById('menu-1-content'));">
-                <div style="margin: 0px; padding: 5px; width: 100%; height: 100%;">
-                    <svg
-                            viewBox="0 0 80 80"
-                            width="60px"
-                            height="60px"
-                            y="0px"
-                            x="0px"
-                            id="Ebene_1"
-                            version="1.1">
-                        <style
-                                id="style2"
-                                type="text/css">
+</nav>
+<div style="visibility: hidden; position: absolute; ">
+    <div id="testbox" class="cell" style="position: relative; ">
+        <div id="testfield" class="text" style="position:absolute;"></div>
+    </div>
+</div>
+<div class="main-news light">
+    {{template "header_content" . }}
+    <div id="news-black" class="cell box3" style="background-color: black;"></div>
+    <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; padding-right: 10px;">
+        <a href="../..{{ .DetailParam }}"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                               viewBox="0 0 357 357" style="enable-background:new 0 0 357 357; position:absolute; top:50%; bottom:50%; transform:translate(-100%, -50%);" xml:space="preserve">
+                        <style type="text/css">
                             .st0{fill:#FCE9F3;}
                         </style>
-                        <g
-                                id="g8">
-                            <path
-                                    id="path4"
-                                    d="M35.7,32c-0.5-4-3.9-7.1-7.9-7.1S20.4,28,19.9,32h-7.8v2h7.8c0.5,4,3.9,7.1,7.9,7.1s7.4-3.1,7.9-7.1h31.1v-2   H35.7z M27.9,39c-3.3,0-5.9-2.7-5.9-6s2.7-6,5.9-6s5.9,2.7,5.9,6S31.1,39,27.9,39z"
-                                    class="st0" />
-                            <path
-                                    id="path6"
-                                    d="M59,47.1c-0.5-4-3.9-7.1-7.9-7.1c-4.1,0-7.4,3.1-7.9,7.1H12.1v2h31.1c0.5,4,3.9,7.1,7.9,7.1   c4.1,0,7.4-3.1,7.9-7.1h7.8v-2H59z M51,54c-3.3,0-5.9-2.7-5.9-6c0-3.3,2.7-6,5.9-6c3.3,0,5.9,2.7,5.9,6C56.9,51.4,54.3,54,51,54z"
-                                    class="st0" />
-                        </g>
-                    </svg>
-                </div>
-            </a>
-        </div>
-        <div id="menu-2" class="menu box6">
-            <a href="#">
-                <div style="margin: 0px; padding: 5px; width: 100%; height: 100%;">
-                    <svg
-                            viewBox="0 0 80 80"
-                            width="60px"
-                            height="60px"
-                            y="0px"
-                            x="0px"
-                            id="Ebene_1"
-                            version="1.1">
-                        <style
-                                id="style2"
-                                type="text/css">
-                            .st0{fill:#FCE9F3;}
-                        </style>
-                        <path
-                                id="path4"
-                                d="M41.9,39.5c0.9-1.9,1.5-4,1.5-6.2c0-7.6-6.2-13.8-13.8-13.8s-13.8,6.2-13.8,13.8S22,47.1,29.6,47.1  c4.5,0,8.6-2.2,11.1-5.6L57.1,53l1.3-1.9L41.9,39.5z M29.6,45.1c-6.5,0-11.8-5.3-11.8-11.8s5.3-11.8,11.8-11.8s11.8,5.3,11.8,11.8  S36.1,45.1,29.6,45.1z"
-                                class="st0" />
-                    </svg>
-                </div>
-            </a>
-        </div>
-        <div id="menu-3" class="cell box3"></div>
-        <div id="menu-4" class="cell box1"></div>
-        {{ range $key, $box := .GridLarge }}
-            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Content.GetId 0 }} href="{{ $box.Content.GetUrl }}" target="_blank" style="cursor: pointer;"{{ end }}>
-                {{ if ne $box.Type "news" }}<div class="boxhead pos-top">
-                    {{ $box.Content.GetDate }}<br />
-                    {{ $box.Content.GetInst }}
-                </div>{{ end }}
-                <div class="text pos-top{{ if ne $box.Type "news" }}2{{ end }}">
-                    {{ $box.Content.GetTitle }}
-                </div>
-            </a>
-        {{ end }}
-        <div id="content-large-impressum" class="type-{{ .ImpressumLarge.Type }}">
-            <div class="text pos-{{ index .ImpressumLarge.Scheme "vertical-align" }}">
-                Impressum | Datenschutz | Informationen<br />
-                (c) 2021 Basel Collections
-            </div>
-        </div>
-
-        {{ range $key, $box := .GridSmall }}
-            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
-                {{ if ne $box.Type "news" }}<div class="boxhead pos-top">
-                    {{ $box.Content.GetDate }}<br />
-                    {{ $box.Content.GetInst }}
-                </div>{{ end }}
-                <div class="text pos-top{{ if ne $box.Type "news" }}2{{ end }}">
-                    {{ $box.Content.GetTitle }}
-                </div>
-            </a>
-        {{ end }}
-        <div id="content-small-impressum" class="type-{{ .ImpressumSmall.Type }}">
-            <div class="text pos-{{ index .ImpressumSmall.Scheme "vertical-align" }}">
-                Impressum | Datenschutz | Informationen<br />
-                (c) 2021 Basel Collections
-            </div>
-        </div>
-
+                <g id="clear">
+                    <polygon class="st0_close_detail" points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3
+                                214.2,178.5 		"/>
+                </g>
+                    </svg></a>
     </div>
+    <div id="title-large" class="type-{{ .BoxLarge.Type }}">
+        <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}" style="color: white;">
+            News
+        </div>
+    </div>
+    <div id="pinkbox">&nbsp;</div>
+    <div id="title-small" class="type-{{ .BoxLarge.Type }}">
+        <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}"  style="color: white;">
+            News
+        </div>
+    </div>
+        <div id="content">
+        <ul>
+            {{range $n := .News}}
+            <li class="news-box">
+                <div class="newstime">{{$n.GetDate}}</div>
+                <div class="newstitle">{{$n.Title}}</div>
+                <div class="newstext">{{$n.Text | raw}}</div>
+            </li>
+            {{end}}
+        </ul>
+    </div>
+
+
+    <div id="content-large-impressum" class="type-impressum">
+        <div class="text pos-middle">
+            Impressum | Datenschutz | Informationen<br />
+            (c) 2021 Basel Collections
+        </div>
+    </div>
+
+    <div id="content-small-impressum" class="type-impressum">
+        <div class="text pos-middle">
+            Impressum | Datenschutz | Informationen<br />
+            (c) 2021 Basel Collections
+        </div>
+    </div>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="static/js/base.js"></script>
+<script src="../static/js/base.js"></script>
 </body>
 </html>

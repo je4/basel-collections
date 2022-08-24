@@ -6,7 +6,7 @@
     </h3>
     {{ range $inst := .Institutions }}
         <div class="filter-entry">
-            <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
+            <a class="{{ if (eq $data.Institution $inst.Id)}} selected{{ end }}" href="{{$data.LinkHome}}?{{if (ne $data.Institution $inst.Id) }}institution={{ $inst.Id }}{{ end }}">{{ $inst.Name }}</a>
         </div>
     {{ end }}
 </div>
@@ -16,20 +16,20 @@
     </h3>
     {{ range $t := .Tags }}
         <div class="filter-entry">
-            <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
+            <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="{{$data.LinkHome}}?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
         </div>
     {{ end }}
 </div>
 <div id="hamburger-content" class="hamburger-content">
     <h3 >
         <div class="filter-entry">
-            <a class="" href="/">Home</a>
+            <a class="" href="{{$data.LinkHome}}">Home</a>
         </div>
         <div class="filter-entry">
-            <a class="" href="/">News</a>
+            <a class="" href="{{$data.LinkNews}}">News</a>
         </div>
         <div class="filter-entry">
-            <a class="" href="/">Impressum</a>
+            <a class="" href="{{$data.LinkImpressum}}">Impressum</a>
         </div>
     </h3>
 </div>

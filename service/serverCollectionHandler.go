@@ -111,25 +111,33 @@ func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 	defer s.templateMutex.RUnlock()
 	tpl := s.templates["collection"]
 	if err := tpl.Execute(w, struct {
-		Tags         []*directus.Tag
-		Institutions []*directus.Institution
-		Collections  []*directus.Collection
-		Institution  int64
-		Tag          int64
-		BoxLarge     Grid
-		BoxSmall     Grid
-		Collection   *directus.Collection
-		DetailParam  string
+		Tags           []*directus.Tag
+		Institutions   []*directus.Institution
+		Collections    []*directus.Collection
+		Institution    int64
+		Tag            int64
+		BoxLarge       Grid
+		BoxSmall       Grid
+		Collection     *directus.Collection
+		DetailParam    string
+		LinkHome       string
+		LinkNews       string
+		LinkImpressum  string
+		LinkCollection string
 	}{
-		Collections:  colls,
-		Tags:         tags,
-		Institutions: institutions,
-		Tag:          tag,
-		Institution:  institution,
-		BoxLarge:     theBoxLarge,
-		BoxSmall:     theBoxSmall,
-		Collection:   theCollection,
-		DetailParam:  "?" + detailValues.Encode(),
+		Collections:    colls,
+		Tags:           tags,
+		Institutions:   institutions,
+		Tag:            tag,
+		Institution:    institution,
+		BoxLarge:       theBoxLarge,
+		BoxSmall:       theBoxSmall,
+		Collection:     theCollection,
+		DetailParam:    "?" + detailValues.Encode(),
+		LinkHome:       "../../",
+		LinkImpressum:  "../../impressum",
+		LinkNews:       "../../news",
+		LinkCollection: "",
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

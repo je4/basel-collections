@@ -8,6 +8,12 @@ import "embed"
 var StaticFS embed.FS
 
 //go:embed template/header_content.inc.gohtml
+//go:embed template/collections.gohtml
+//go:embed template/collection.gohtml
+//go:embed template/news.gohtml
+var TemplateFS embed.FS
+
+//go:embed template/header_content.inc.gohtml
 var HeaderContentIncTemplate string
 
 //go:embed template/collections.gohtml

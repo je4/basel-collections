@@ -50,6 +50,7 @@ body {
 .type-news {
   /* border: 1px solid blue; */
   position: relative;
+  background-color: $dark;
 }
 
 .type-impressum {
@@ -192,6 +193,10 @@ a.extlink:hover {
   color: $deeppink;
 }
 
+.light {
+  background-color: $light;
+}
+
 #menu-1-content {
   padding: 0 0 0 10px;
   background-color: $menu-1-background;
@@ -284,6 +289,35 @@ a.extlink:hover {
 
 #content-text a:hover {
   color: inherit;
+}
+
+#content > ul {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.news-box {
+  width: 400px;
+  border: none;
+  list-style: none;
+  margin: 10px;
+  font-family: $font-family-mono;
+  font-size: 20px;
+}
+.newstime {
+  color: $deeppink;
+  font-size: 18px;
+}
+.newstitle {
+  color: black; //black
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.newstext {
+  color: $dark;
 }
 
 

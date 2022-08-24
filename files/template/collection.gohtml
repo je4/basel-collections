@@ -16,8 +16,8 @@
             }
 
             #title-small {
-                grid-column: 1 / span {{ .BoxSmall.Cols }};
-                grid-row: 2 / span {{ .BoxSmall.Rows }};
+                grid-column: 1 / 4;
+                grid-row: 2 / span 3;
             {{ range $tag, $val := .BoxSmall.Scheme }}
                 {{ $tag }}: {{ $val }};{{ end }}
             }
@@ -171,7 +171,7 @@
     <div class="main-detail">
         {{template "header_content" . }}
         <div id="menu-3" class="cell box3"></div>
-        <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; margin-right: 10px;">
+        <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; padding-right: 10px;">
             <a href="../..{{ .DetailParam }}"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                   width="55px" height="55px" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357; position:absolute; top:50%; bottom:50%; transform:translate(-100%, -50%);" xml:space="preserve">
                         <style type="text/css">

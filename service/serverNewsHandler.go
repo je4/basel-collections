@@ -54,6 +54,21 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 	gridLarge, lastRowLarge := buildGrid(NEWSLARGE, contents)
 	gridSmall, lastRowSmall := buildGrid(NEWSLARGE, contents)
 
+	var theBoxLarge Grid
+	for _, box := range gridLarge {
+		if box.Type == "news" {
+			theBoxLarge = box
+			break
+		}
+	}
+	var theBoxSmall Grid
+	for _, box := range gridSmall {
+		if box.Type == "news" {
+			theBoxSmall = box
+			break
+		}
+	}
+
 	impressumLarge := &Impressum{
 		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
 		Type:   "impressum",
@@ -86,9 +101,17 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 		Institution                    int64
 		Tag                            int64
 		DetailParam                    string
+		LinkHome                       string
+		LinkImpressum                  string
+		LinkNews                       string
+		LinkCollection                 string
+		BoxLarge                       Grid
+		BoxSmall                       Grid
 	}{
 		GridLarge:      gridLarge,
 		GridSmall:      gridSmall,
+		BoxLarge:       theBoxLarge,
+		BoxSmall:       theBoxSmall,
 		ImpressumLarge: impressumLarge,
 		ImpressumSmall: impressumSmall,
 		News:           news,
@@ -97,6 +120,10 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 		Tag:            tag,
 		Institution:    institution,
 		DetailParam:    "?" + detailValues.Encode(),
+		LinkHome:       "../",
+		LinkImpressum:  "../impressum",
+		LinkNews:       "",
+		LinkCollection: "../detail",
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
