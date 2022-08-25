@@ -164,12 +164,12 @@
 
   #close-detail {
     grid-column: 7 / span 2;
-    grid-row: 2 / span 2;
+    grid-row: 2 / span 1;
   }
 
   .box-close-detail {
     color: $white;
-    background-color: $dark;
+    background-color: inherit;
     > div {
       font-family: $font-family-sans-serif-condensed;
       font-weight: 400;
