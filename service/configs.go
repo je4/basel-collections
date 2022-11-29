@@ -16,6 +16,7 @@ const fontFamilySansSerifCondensed = "'IBM Plex Sans Condensed', sans-serif"
 const BoxCell = "cell"
 const BoxBlank = "blank"
 const BoxNews = "news"
+const BoxImpressum = "impressum-page"
 
 const top = "top"
 const bottom = "bottom"

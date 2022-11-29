@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Basel Collections - News</title>
+    <title>Basel Collections - Impressum</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="../static/css/basel-collections.css" rel="stylesheet">
@@ -15,7 +15,7 @@
 
             #title-small {
                 grid-column: 1 / span 3;
-                grid-row: 2 / span 3;
+                grid-row: 2 / span 2;
             }
 
             #pinkbox {
@@ -47,13 +47,13 @@
         }
         @media (min-width: 769px) {
             #title-large {
-                grid-column: 1 / span 2;
-                grid-row: 2 / span 3;
+                grid-column: 1 / span 4;
+                grid-row: 2 / span 2;
             }
 
             #pinkbox {
                 grid-column: 10 / span 3;
-                grid-row: 2 / span 3;
+                grid-row: 2 / span 2;
                 background-color: #EC339B; // deeppink
             }
 
@@ -212,9 +212,9 @@
         <div id="testfield" class="text" style="position:absolute;"></div>
     </div>
 </div>
-<div class="main-news light">d
+<div class="main-news dark">
     {{template "header_content" . }}
-    <div id="news-black" class="cell box3" style="background-color: black;"></div>
+    <div id="news-black" class="cell box3" style=""></div>
     <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; padding-right: 10px;">
         <a href="../..{{ .DetailParam }}"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                viewBox="0 0 357 357" style="position:absolute; top:10px; bottom:50%; transform:translate(-100%);" xml:space="preserve">
@@ -228,23 +228,27 @@
                     </svg></a>
     </div>
     <div id="title-large" class="type-{{ .BoxLarge.Type }}">
-        <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}" style="color: white;">
-            News
+        <div class="text pos-bottom" style="color: black;">
+            Impressum
         </div>
     </div>
     <div id="pinkbox">&nbsp;</div>
     <div id="title-small" class="type-{{ .BoxLarge.Type }}">
-        <div class="text pos-{{ index .BoxLarge.Scheme "vertical-align" }}"  style="color: white;">
-            News
+        <div class="text pos-bottom"  style="color: black;">
+            Impressum
         </div>
     </div>
         <div id="content">
         <ul>
-            {{range $n := .News}}
+            {{range $i := .Institutions}}
+                {{$loc := (index $data.Locations $i.Location) }}
             <li class="news-box">
-                <div class="newstime">{{$n.GetDate}}</div>
-                <div class="newstitle">{{$n.Title}}</div>
-                <div class="newstext">{{$n.Text | raw}}</div>
+                {{/*<div class="newstime">{{$n.GetDate}}</div> */}}
+                <div class="impressumtitle">{{$i.Name}}</div>
+                {{/* <div class="impressumtext">{{$i.Contact | raw}}</div> */}}
+                <div class="impressumtext">{{$loc.Street | raw}}</div>
+                <div class="impressumtext">{{$loc.Zip | raw}} {{$loc.City | raw}}</div>
+                <div class="impressumtext" style="padding-bottom: 2em;"><a style="color: inherit;" href="{{$i.Url | raw}}">{{abbrev 30 (trimPrefix "https://" $i.Url) | raw}}</a></div>
             </li>
             {{end}}
         </ul>

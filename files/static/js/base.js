@@ -168,7 +168,8 @@ window.optimizeFontsize = function () {
 
     let els = document.getElementsByClassName("type-cell");
     let els2 = document.getElementsByClassName("type-news");
-    els = [...els, ...els2];
+    let els3 = document.getElementsByClassName("type-impressum-page");
+    els = [...els, ...els2, ...els3];
     for ( i = 0; i < els.length; i++ ) {
         el = els[i];
         let daText = el.innerText;

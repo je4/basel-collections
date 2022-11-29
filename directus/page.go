@@ -53,7 +53,7 @@ func (d *Directus) loadPages() error {
 		if d.pages != nil {
 			d.clearCache()
 		}
-		urlStr := "%s/items/page"
+		urlStr := fmt.Sprintf("%s/items/pages", d.baseurl)
 		req, err := http.NewRequest("GET", urlStr, bytes.NewReader(nil))
 		if err != nil {
 			return errors.Wrapf(err, "cannot create request %s", urlStr)

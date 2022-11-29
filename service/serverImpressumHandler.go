@@ -24,7 +24,7 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	page, err := s.dir.GetPageByName("impressum")
+	page, err := s.dir.GetPageByName("Impressum")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
@@ -44,6 +44,19 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-type", "text/plain")
 		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
 		return
+	}
+
+	_locations, err := s.dir.GetLocations()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Header().Set("Content-type", "text/plain")
+		w.Write([]byte(fmt.Sprintf("cannot get locations: %v", err)))
+		return
+	}
+
+	var locations = map[int64]*directus.Location{}
+	for _, l := range _locations {
+		locations[l.Id] = l
 	}
 
 	impressumLarge := &Impressum{
@@ -67,12 +80,13 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 
 	s.templateMutex.RLock()
 	defer s.templateMutex.RUnlock()
-	tpl := s.templates["news"]
+	tpl := s.templates["impressum"]
 
 	if err := tpl.Execute(w, struct {
 		ImpressumLarge, ImpressumSmall *Impressum
 		Tags                           []*directus.Tag
 		Institutions                   []*directus.Institution
+		Locations                      map[int64]*directus.Location
 		Institution                    int64
 		Tag                            int64
 		DetailParam                    string
@@ -81,11 +95,13 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		LinkNews                       string
 		LinkCollection                 string
 		Content                        string
+		BoxLarge                       Grid
 	}{
 		ImpressumLarge: impressumLarge,
 		ImpressumSmall: impressumSmall,
 		Tags:           tags,
 		Institutions:   institutions,
+		Locations:      locations,
 		Tag:            tag,
 		Institution:    institution,
 		DetailParam:    "?" + detailValues.Encode(),
@@ -94,6 +110,7 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		LinkNews:       "",
 		LinkCollection: "../detail",
 		Content:        page.Content,
+		BoxLarge:       Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

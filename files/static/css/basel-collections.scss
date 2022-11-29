@@ -53,6 +53,13 @@ body {
   background-color: $dark;
 }
 
+.type-impressum-page {
+  /* border: 1px solid blue; */
+  position: relative;
+  background-color: $light;
+  color: $dark;
+}
+
 .type-impressum {
   text-align: center;
   font-size: 18px;
@@ -318,6 +325,15 @@ a.extlink:hover {
 }
 .newstext {
   color: $dark;
+}
+
+.impressumtitle {
+  color: $light;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.impressumtext {
+  color: $light;
 }
 
 
