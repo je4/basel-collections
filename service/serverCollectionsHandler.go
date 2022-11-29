@@ -82,7 +82,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, contents)
-	gridSmall, lastRowSmall := buildGrid(GRIDLARGE, contents)
+	gridSmall, lastRowSmall := buildGrid(GRIDSMALL, contents)
 
 	impressumLarge := &Impressum{
 		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
