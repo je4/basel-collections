@@ -212,7 +212,7 @@
         <div id="testfield" class="text" style="position:absolute;"></div>
     </div>
 </div>
-<div class="main-news light">d
+<div class="main-news light">
     {{template "header_content" . }}
     <div id="news-black" class="cell box3" style="background-color: black;"></div>
     <div id="close-detail" class="cell box-close-detail" style="position: relative; text-align: right; padding-right: 10px;">
@@ -241,10 +241,17 @@
         <div id="content">
         <ul>
             {{range $n := .News}}
+                {{$inst := (index $data.Institutions $n.Institution)}}
             <li class="news-box">
+                {{if (ne $n.Type.Type "")}}<div class="newstext" style="font-size: smaller;">{{$n.Type.Type}}</div>{{end}}
                 <div class="newstime">{{$n.GetDate}}</div>
                 <div class="newstitle">{{$n.Title}}</div>
+                {{if (ne $n.Url "")}}<div class="newstext"><a href="{{$n.Url | raw}}">Link</a></div>{{end}}
                 <div class="newstext">{{$n.Text | raw}}</div>
+                <div class="newstext" style="font-size:12px; text-align: right;">
+                    <img src="https://cms.basel-collections.ch/assets/{{$inst.LogoSmall}}?width=32&height=32&fit=inside" class="img" alt="logo small">
+                    {{$inst.Name}}
+                </div>
             </li>
             {{end}}
         </ul>

@@ -22,6 +22,8 @@ type Institution struct {
 	Email       string    `json:"email"`
 	Phone       string    `json:"phone"`
 	Description string    `json:"description"`
+	Logo        string    `json:"logo"`
+	LogoSmall   string    `json:"logo_small"`
 	Sort        int64     `json:"sort"`
 }
 

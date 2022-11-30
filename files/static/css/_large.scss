@@ -58,14 +58,14 @@
     font-weight: $font-weight;
     font-size: 20pt;
     color: $white;
-    grid-column: 1 / span 8;
-    grid-row: 8;
+    grid-column: 3 / span 6;
+    grid-row: 6;
     padding: 0 20px 20px 20px;
   }
 
   #content-image {
-    grid-column: 6 / span 7;
-    grid-row: 8 / span 1;
+    grid-column: 8 / span 5;
+    grid-row: 6 / span 1;
     > img {
       width: 100%;
       max-height: 33vw;
@@ -77,7 +77,7 @@
     margin-top: calc(33vw + 50px);
     background-color: $pink;
     grid-column: 9 / span 4;
-    grid-row: 8;
+    grid-row: 3;
     height: 180px;
   }
 
@@ -88,7 +88,7 @@
     color: $white;
     margin-top: calc(33vw + 240px);
     grid-column: 9 / span 4;
-    grid-row: 8;
+    grid-row: 3;
   }
 
   #content-large-impressum {
@@ -138,8 +138,8 @@
   }
 
   #content-image-blocker {
-    width: 25vw;
-    height: 33vw;
+    width: 16vw;
+    height: 23vw;
     float: right;
   }
   #content-image-blocker:after {
@@ -167,16 +167,18 @@
     font-size: 23pt;
   }
 
-  #title-box {
-    font-family: $font-family-mono;
-    font-weight: $font-weight-bold;
-    font-size: 33pt;
-    color: $white;
-    grid-column: 6 / span 7;
-    grid-row: 5 / span 3;
-  }
+#title-box {
+  display: none;
+}
 
-  .st0_close_detail {
+#title-box2 {
+  font-family: $font-family-mono;
+  font-weight: $font-weight-bold;
+  font-size: 33pt;
+  color: $white;
+}
+
+.st0_close_detail {
     fill: $black;
   }
 

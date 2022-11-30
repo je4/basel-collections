@@ -43,12 +43,17 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
 		return
 	}
-	institutions, err := s.dir.GetInstitutions()
+	_institutions, err := s.dir.GetInstitutions()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
 		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
 		return
+	}
+
+	var institutions = map[int64]*directus.Institution{}
+	for _, i := range _institutions {
+		institutions[i.Id] = i
 	}
 
 	gridLarge, lastRowLarge := buildGrid(NEWSLARGE, contents)
@@ -96,7 +101,7 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 		GridLarge, GridSmall           []Grid
 		ImpressumLarge, ImpressumSmall *Impressum
 		Tags                           []*directus.Tag
-		Institutions                   []*directus.Institution
+		Institutions                   map[int64]*directus.Institution
 		News                           []*directus.News
 		Institution                    int64
 		Tag                            int64

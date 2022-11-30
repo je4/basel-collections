@@ -24,11 +24,18 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	page, err := s.dir.GetPageByName("Impressum")
+	impressumPage, err := s.dir.GetPageByName("Impressum")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get impressum page: %v", err)))
+		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
+		return
+	}
+	aboutPage, err := s.dir.GetPageByName("About")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Header().Set("Content-type", "text/plain")
+		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
 		return
 	}
 	tags, err := s.dir.GetTags()
@@ -94,23 +101,25 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		LinkImpressum                  string
 		LinkNews                       string
 		LinkCollection                 string
-		Content                        string
+		ImpressumContent               string
+		AboutContent                   string
 		BoxLarge                       Grid
 	}{
-		ImpressumLarge: impressumLarge,
-		ImpressumSmall: impressumSmall,
-		Tags:           tags,
-		Institutions:   institutions,
-		Locations:      locations,
-		Tag:            tag,
-		Institution:    institution,
-		DetailParam:    "?" + detailValues.Encode(),
-		LinkHome:       "../",
-		LinkImpressum:  "../impressum",
-		LinkNews:       "",
-		LinkCollection: "../detail",
-		Content:        page.Content,
-		BoxLarge:       Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
+		ImpressumLarge:   impressumLarge,
+		ImpressumSmall:   impressumSmall,
+		Tags:             tags,
+		Institutions:     institutions,
+		Locations:        locations,
+		Tag:              tag,
+		Institution:      institution,
+		DetailParam:      "?" + detailValues.Encode(),
+		LinkHome:         "../",
+		LinkImpressum:    "../impressum",
+		LinkNews:         "../news",
+		LinkCollection:   "../detail",
+		ImpressumContent: impressumPage.Content,
+		AboutContent:     aboutPage.Content,
+		BoxLarge:         Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

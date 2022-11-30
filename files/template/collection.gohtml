@@ -221,6 +221,30 @@
         <div id="content">
             <div id="content-image-blocker"></div>
             <div id="content-text">
+                <div id="title-box2">
+                    <div>{{ .Collection.Title }}</div>
+                    <a class="extlink" href="{{ .Collection.Url }}">Collection Website<svg
+                                id="Ebene_1"
+                                data-name="Ebene 1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 80 80"
+                                width="40"
+                                height="40"
+                        >
+                            <defs><style>.cls-1{fill:#e6e6e6;}</style></defs><polygon class="cls-1" points="61.44 63.11 16.18 63.11 16.18 20.45 16.18 19.26 47.18 19.26 47.18 17.32 14.18 17.32 14.18 19.26 14.18 19.26 14.18 63.11 14.18 63.11 14.18 65.05 60.2 65.05 63.43 65.05 63.43 65.01 63.44 65.01 63.44 33.2 61.44 33.2 61.44 63.11"/><polygon class="cls-1" points="63.8 14.95 51.65 14.95 51.65 16.97 62.29 16.97 37.55 41.04 38.96 42.49 63.8 18.33 63.8 29.12 65.82 29.12 65.82 16.97 65.82 14.95 63.8 14.95"/>
+                        </svg></a><br />
+                    <a class="extlink" href="{{ $inst.Url }}">{{ $inst.Name }}<svg
+                                id="Ebene_1"
+                                data-name="Ebene 1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 80 80"
+                                width="40"
+                                height="40"
+                        >
+                            <defs><style>.cls-1{fill:#e6e6e6;}</style></defs><polygon class="cls-1" points="61.44 63.11 16.18 63.11 16.18 20.45 16.18 19.26 47.18 19.26 47.18 17.32 14.18 17.32 14.18 19.26 14.18 19.26 14.18 63.11 14.18 63.11 14.18 65.05 60.2 65.05 63.43 65.05 63.43 65.01 63.44 65.01 63.44 33.2 61.44 33.2 61.44 63.11"/><polygon class="cls-1" points="63.8 14.95 51.65 14.95 51.65 16.97 62.29 16.97 37.55 41.04 38.96 42.49 63.8 18.33 63.8 29.12 65.82 29.12 65.82 16.97 65.82 14.95 63.8 14.95"/>
+                        </svg></a>
+                </div>
+
                 {{ .Collection.Description | raw }}
             </div>
         </div>

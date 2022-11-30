@@ -79,7 +79,7 @@ func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 		theInstitution, err := theCollection.GetInstitution()
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Header().Set("Content-type", "text/plain")
+			w.Header().Set("ImpressumContent-type", "text/plain")
 			w.Write([]byte(fmt.Sprintf("cannot get institution: %v", err)))
 			return
 		}
