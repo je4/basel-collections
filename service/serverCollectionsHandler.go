@@ -89,14 +89,14 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Type:   "impressum",
 		Scheme: IMPRESSUM,
 		VAlign: "middle",
-		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
+		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"about\">Information</a><br />(c) 2021 Basel Collections",
 	}
 	impressumSmall := &Impressum{
 		Id: 0, Left: 1, Cols: 8, Top: lastRowSmall, Rows: 3,
 		Type:   "impressum",
 		Scheme: IMPRESSUM,
 		VAlign: "middle",
-		Text:   "Impressum | Datenschutz | Informationen<br />(c) 2021 Basel Collections",
+		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"about\">Information</a><br />(c) 2021 Basel Collections",
 	}
 
 	if s.templateReload {
@@ -120,6 +120,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		LinkHome                       string
 		LinkNews                       string
 		LinkImpressum                  string
+		LinkAbout                      string
 		LinkCollection                 string
 	}{
 		GridLarge:      gridLarge,
@@ -135,6 +136,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:    "?" + detailValues.Encode(),
 		LinkHome:       "",
 		LinkImpressum:  "impressum",
+		LinkAbout:      "about",
 		LinkNews:       "news",
 		LinkCollection: "detail",
 	}); err != nil {

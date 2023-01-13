@@ -110,6 +110,20 @@ func (s *Server) InitTemplates() error {
 	}
 	s.templates["impressum"] = tpl
 
+	file = filepath.ToSlash(filepath.Join(baseDir, "about.gohtml"))
+	tpl, err = template.New("about.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
+	if err != nil {
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "about", file)
+	}
+	s.templates["about"] = tpl
+
+	file = filepath.ToSlash(filepath.Join(baseDir, "datenschutz.gohtml"))
+	tpl, err = template.New("datenschutz.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
+	if err != nil {
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "datenschutz", file)
+	}
+	s.templates["datenschutz"] = tpl
+
 	file = filepath.ToSlash(filepath.Join(baseDir, "collection.gohtml"))
 	tpl, err = template.New("collection.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
 	if err != nil {
@@ -201,6 +215,8 @@ func (s *Server) ListenAndServe(cert, key string) error {
 	router.HandleFunc("/", s.collectionsHandler).Methods("GET")
 	router.HandleFunc("/news", s.newsHandler).Methods("GET")
 	router.HandleFunc("/impressum", s.impressumHandler).Methods("GET")
+	router.HandleFunc("/about", s.aboutHandler).Methods("GET")
+	router.HandleFunc("/datenschutz", s.datenschutzHandler).Methods("GET")
 	router.HandleFunc("/detail/{collection}", s.collectionHandler).Methods("GET")
 
 	loggedRouter := handlers.CombinedLoggingHandler(s.accessLog, handlers.ProxyHeaders(router))

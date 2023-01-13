@@ -16,7 +16,7 @@
     </h3>
     {{ range $t := .Tags }}
         <div class="filter-entry">
-            <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="{{$data.LinkHome}}?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag | upper }}</a>
+            <a class="{{ if (eq $data.Tag $t.Id )}} selected{{ end }}" href="{{$data.LinkHome}}?{{ if (ne $data.Tag $t.Id) }}tag={{ $t.Id }}{{ end }}">{{ $t.Tag }}</a>
         </div>
     {{ end }}
 </div>
@@ -29,7 +29,7 @@
             <a class="" href="{{$data.LinkNews}}">News</a>
         </div>
         <div class="filter-entry">
-            <a class="" href="{{$data.LinkImpressum}}">Impressum</a>
+            <a class="" href="{{$data.LinkAbout}}">Information</a>
         </div>
     </h3>
 </div>

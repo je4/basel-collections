@@ -124,6 +124,7 @@ func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 		LinkNews       string
 		LinkImpressum  string
 		LinkCollection string
+		LinkAbout      string
 	}{
 		Collections:    colls,
 		Tags:           tags,
@@ -136,6 +137,7 @@ func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:    "?" + detailValues.Encode(),
 		LinkHome:       "../../",
 		LinkImpressum:  "../../impressum",
+		LinkAbout:      "../../about",
 		LinkNews:       "../../news",
 		LinkCollection: "",
 	}); err != nil {

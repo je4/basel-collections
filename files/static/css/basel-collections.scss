@@ -200,6 +200,14 @@ a.extlink:hover {
   color: $deeppink;
 }
 
+.link {
+  text-decoration: inherit;
+  color: black;
+}
+a.link:hover {
+  color: $deeppink;
+}
+
 .light {
   background-color: $light;
 }

@@ -100,7 +100,7 @@ func (d *Directus) GetCollectionsByTags(tags []int64) ([]*Collection, error) {
 		var tagCount int
 		for _, t := range tags {
 			for _, t2 := range coll.Tags {
-				if t == t2.Id {
+				if t == t2.TagsId {
 					tagCount++
 				}
 			}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
+	"golang.org/x/exp/slices"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -63,6 +64,9 @@ func (d *Directus) loadTags() error {
 			d.tags = append(d.tags, tag)
 		}
 		d.lastAccess = time.Now()
+		slices.SortFunc(d.tags, func(a, b *Tag) bool {
+			return a.Tag < b.Tag
+		})
 	}
 	return nil
 }

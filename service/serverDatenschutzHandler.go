@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
+func (s *Server) datenschutzHandler(w http.ResponseWriter, req *http.Request) {
 	var err error
 	detailValues := url.Values{}
 
@@ -24,18 +24,11 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	impressumPage, err := s.dir.GetPageByName("Impressum")
+	datenschutzPage, err := s.dir.GetPageByName("Datenschutz")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
-		return
-	}
-	kontaktPage, err := s.dir.GetPageByName("Kontakt")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
+		w.Write([]byte(fmt.Sprintf("cannot get impressum datenschutz Page: %v", err)))
 		return
 	}
 	tags, err := s.dir.GetTags()
@@ -87,7 +80,7 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 
 	s.templateMutex.RLock()
 	defer s.templateMutex.RUnlock()
-	tpl := s.templates["impressum"]
+	tpl := s.templates["datenschutz"]
 
 	if err := tpl.Execute(w, struct {
 		ImpressumLarge, ImpressumSmall *Impressum
@@ -101,27 +94,25 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		LinkImpressum                  string
 		LinkNews                       string
 		LinkCollection                 string
-		ImpressumContent               string
-		KontaktContent                 string
+		DatenschutzContent             string
 		BoxLarge                       Grid
 		LinkAbout                      string
 	}{
-		ImpressumLarge:   impressumLarge,
-		ImpressumSmall:   impressumSmall,
-		Tags:             tags,
-		Institutions:     institutions,
-		Locations:        locations,
-		Tag:              tag,
-		Institution:      institution,
-		DetailParam:      "?" + detailValues.Encode(),
-		LinkHome:         "../",
-		LinkImpressum:    "../impressum",
-		LinkAbout:        "../about",
-		LinkNews:         "../news",
-		LinkCollection:   "../detail",
-		ImpressumContent: impressumPage.Content,
-		KontaktContent:   kontaktPage.Content,
-		BoxLarge:         Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
+		ImpressumLarge:     impressumLarge,
+		ImpressumSmall:     impressumSmall,
+		Tags:               tags,
+		Institutions:       institutions,
+		Locations:          locations,
+		Tag:                tag,
+		Institution:        institution,
+		DetailParam:        "?" + detailValues.Encode(),
+		LinkHome:           "../",
+		LinkImpressum:      "../impressum",
+		LinkAbout:          "../about",
+		LinkNews:           "../news",
+		LinkCollection:     "../detail",
+		DatenschutzContent: datenschutzPage.Content,
+		BoxLarge:           Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

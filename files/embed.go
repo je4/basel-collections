@@ -12,16 +12,6 @@ var StaticFS embed.FS
 //go:embed template/collection.gohtml
 //go:embed template/news.gohtml
 //go:embed template/impressum.gohtml
+//go:embed template/about.gohtml
+//go:embed template/datenschutz.gohtml
 var TemplateFS embed.FS
-
-//go:embed template/header_content.inc.gohtml
-var HeaderContentIncTemplate string
-
-//go:embed template/collections.gohtml
-var CollectionsTemplate string
-
-//go:embed template/collection.gohtml
-var CollectionTemplate string
-
-//go:embed template/news.gohtml
-var NewsTemplate string

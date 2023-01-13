@@ -1,6 +1,6 @@
 module github.com/je4/basel-collections/v2
 
-go 1.17
+go 1.19
 
 replace github.com/je4/basel-collections/v2 => ./
 
@@ -14,6 +14,7 @@ require (
 	github.com/je4/utils/v2 v2.0.6
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/pkg/errors v0.9.1
+	golang.org/x/exp v0.0.0-20230113152452-c42ee1cf562e
 )
 
 require (
@@ -30,5 +31,5 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/pkg/sftp v1.13.5 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
