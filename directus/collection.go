@@ -33,6 +33,18 @@ type Collection struct {
 	Tags        []CollectionTag `json:"tags,omitempty"`
 }
 
+func (c *Collection) GetTagIDs() []int64 {
+	result := make([]int64, len(c.Tags))
+	for _, t := range c.Tags {
+		result = append(result, t.TagsId)
+	}
+	return result
+}
+
+func (c *Collection) GetInstitutionID() int64 {
+	return c.Institution
+}
+
 type sortCollectionsBySort []*Collection
 
 func (sc sortCollectionsBySort) Len() int           { return len(sc) }

@@ -38,6 +38,14 @@ type News struct {
 	Type        NewsType `json:"type,omitempty"`
 }
 
+func (n *News) GetTagIDs() []int64 {
+	return []int64{}
+}
+
+func (n *News) GetInstitutionID() int64 {
+	return 0
+}
+
 func absDuration(d time.Duration) time.Duration {
 	if d > 0 {
 		return d

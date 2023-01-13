@@ -217,7 +217,19 @@
         <div id="menu-4" class="cell box1"></div>
 
         {{ range $key, $box := .GridLarge }}
-            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}" {{ if (eq $box.Type "news") }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+            {{$found := false}}
+            {{if (ne $data.Tag 0)}}
+                {{range $x, $t := $box.Content.GetTagIDs}}
+                    {{if (eq $data.Tag $t)}}{{$found = true}}{{end}}
+                {{end}}
+            {{end}}
+            {{if (ne $data.Institution 0)}}
+               {{if (eq $data.Institution $box.Content.GetInstitutionID)}}{{$found = true}}{{end}}
+            {{end}}
+            {{if (and (eq $data.Tag 0) (eq $data.Institution 0))}}
+                {{$found = true}}
+            {{end}}
+            <a id="content-large-{{ $key }}" class="type-{{ $box.Type }}{{if not $found}} notfound{{end}}" {{ if (eq $box.Type "news") }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
                 <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
                     {{ $box.Content.GetTitle }}
                 </div>
@@ -231,7 +243,13 @@
         </div>
 
         {{ range $key, $box := .GridSmall }}
-            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if eq $box.Type "news" }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+            {{$found := false}}
+            {{if (ne $data.Tag 0)}}
+                {{range $x, $t := $box.Content.GetTagIDs}}
+                    {{if (eq $data.Tag $t)}}{{$found = true}}{{end}}
+                {{end}}
+            {{end}}
+            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}{{if not $found}} notfound{{end}}" {{ if eq $box.Type "news" }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
                 <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
                     {{ $box.Content.GetTitle }}
                 </div>

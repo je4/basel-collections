@@ -47,6 +47,10 @@ body {
   position: relative;
 }
 
+.type-cell.notfound {
+  filter: brightness(3%);
+}
+
 .type-news {
   /* border: 1px solid blue; */
   position: relative;

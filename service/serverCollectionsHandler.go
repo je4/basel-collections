@@ -61,15 +61,18 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	var colls []*directus.Collection
-	if institution > 0 {
-		colls, err = s.dir.GetCollectionsByInstitution(institution)
-	} else {
-		if tag > 0 {
-			colls, err = s.dir.GetCollectionsByTags([]int64{tag})
+	/*
+		if institution > 0 {
+			colls, err = s.dir.GetCollectionsByInstitution(institution)
 		} else {
-			colls, err = s.dir.GetCollections()
+			if tag > 0 {
+				colls, err = s.dir.GetCollectionsByTags([]int64{tag})
+			} else {
+				colls, err = s.dir.GetCollections()
+			}
 		}
-	}
+	*/
+	colls, err = s.dir.GetCollections()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")

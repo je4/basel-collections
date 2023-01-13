@@ -6,6 +6,8 @@ type Content interface {
 	GetInst() string
 	GetTitle() string
 	GetUrl() string
+	GetTagIDs() []int64
+	GetInstitutionID() int64
 }
 
 type StaticContent struct {
@@ -14,6 +16,14 @@ type StaticContent struct {
 	institution string
 	title       string
 	url         string
+}
+
+func (sc *StaticContent) GetTagIDs() []int64 {
+	return []int64{}
+}
+
+func (sc *StaticContent) GetInstitutionID() int64 {
+	return 0
 }
 
 func (sc *StaticContent) GetId() int64     { return sc.id }
