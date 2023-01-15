@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
+func (s *Server) kontaktHandler(w http.ResponseWriter, req *http.Request) {
 	var err error
 	detailValues := url.Values{}
 
@@ -24,18 +24,11 @@ func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
 		institution, err = strconv.ParseInt(institutionStr, 10, 64)
 	}
 
-	aboutPage, err := s.dir.GetPageByName("About")
+	kontaktPage, err := s.dir.GetPageByName("Kontakt")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get about about Page: %v", err)))
-		return
-	}
-	sponsorPage, err := s.dir.GetPageByName("Sponsoren")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get about sponsor Page: %v", err)))
+		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
 		return
 	}
 	tags, err := s.dir.GetTags()
@@ -71,14 +64,14 @@ func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
 		Type:   "impressum",
 		Scheme: IMPRESSUM,
 		VAlign: "middle",
-		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"about\">Information</a><br />(c) 2021 Basel Collections",
+		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"kontakt\">Information</a><br />(c) 2021 Basel Collections",
 	}
 	impressumSmall := &Impressum{
 		Id: 0, Left: 1, Cols: 8, Top: 20, Rows: 3,
 		Type:   "impressum",
 		Scheme: IMPRESSUM,
 		VAlign: "middle",
-		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"about\">Information</a><br />(c) 2021 Basel Collections",
+		Text:   "<a class=\"link\" href=\"impressum\">Impressum</a> | <a class=\"link\" href=\"datenschutz\">Datenschutz</a> | <a class=\"link\" href=\"kontakt\">Information</a><br />(c) 2021 Basel Collections",
 	}
 
 	if s.templateReload {
@@ -87,7 +80,7 @@ func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
 
 	s.templateMutex.RLock()
 	defer s.templateMutex.RUnlock()
-	tpl := s.templates["about"]
+	tpl := s.templates["kontakt"]
 
 	if err := tpl.Execute(w, struct {
 		ImpressumLarge, ImpressumSmall *Impressum
@@ -101,8 +94,7 @@ func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
 		LinkImpressum                  string
 		LinkNews                       string
 		LinkCollection                 string
-		AboutContent                   string
-		SponsorContent                 string
+		KontaktContent                 string
 		BoxLarge                       Grid
 		LinkAbout                      string
 	}{
@@ -116,11 +108,10 @@ func (s *Server) aboutHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:    "?" + detailValues.Encode(),
 		LinkHome:       "../",
 		LinkImpressum:  "../impressum",
-		LinkAbout:      "../about",
+		LinkAbout:      "../information",
 		LinkNews:       "../news",
 		LinkCollection: "../detail",
-		AboutContent:   aboutPage.Content,
-		SponsorContent: sponsorPage.Content,
+		KontaktContent: kontaktPage.Content,
 		BoxLarge:       Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

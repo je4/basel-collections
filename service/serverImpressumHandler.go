@@ -31,13 +31,6 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
 		return
 	}
-	kontaktPage, err := s.dir.GetPageByName("Kontakt")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get impressum impressumPage: %v", err)))
-		return
-	}
 	tags, err := s.dir.GetTags()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -102,7 +95,6 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		LinkNews                       string
 		LinkCollection                 string
 		ImpressumContent               string
-		KontaktContent                 string
 		BoxLarge                       Grid
 		LinkAbout                      string
 	}{
@@ -116,11 +108,10 @@ func (s *Server) impressumHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:      "?" + detailValues.Encode(),
 		LinkHome:         "../",
 		LinkImpressum:    "../impressum",
-		LinkAbout:        "../about",
+		LinkAbout:        "../information",
 		LinkNews:         "../news",
 		LinkCollection:   "../detail",
 		ImpressumContent: impressumPage.Content,
-		KontaktContent:   kontaktPage.Content,
 		BoxLarge:         Grid{Id: 0, Left: 1, Cols: 8, Top: 2, Rows: 2, Type: BoxImpressum, Scheme: SCHEMES[3], VAlign: bottom},
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

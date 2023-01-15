@@ -140,7 +140,7 @@ func (s *Server) collectionHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:    "?" + detailValues.Encode(),
 		LinkHome:       "../../",
 		LinkImpressum:  "../../impressum",
-		LinkAbout:      "../../about",
+		LinkAbout:      "../../information",
 		LinkNews:       "../../news",
 		LinkCollection: "",
 	}); err != nil {

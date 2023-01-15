@@ -110,12 +110,19 @@ func (s *Server) InitTemplates() error {
 	}
 	s.templates["impressum"] = tpl
 
-	file = filepath.ToSlash(filepath.Join(baseDir, "about.gohtml"))
-	tpl, err = template.New("about.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
+	file = filepath.ToSlash(filepath.Join(baseDir, "kontakt.gohtml"))
+	tpl, err = template.New("kontakt.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
 	if err != nil {
-		return errors.Wrapf(err, "cannot parse template %s - %s:", "about", file)
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "kontakt", file)
 	}
-	s.templates["about"] = tpl
+	s.templates["kontakt"] = tpl
+
+	file = filepath.ToSlash(filepath.Join(baseDir, "information.gohtml"))
+	tpl, err = template.New("information.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
+	if err != nil {
+		return errors.Wrapf(err, "cannot parse template %s - %s:", "information", file)
+	}
+	s.templates["information"] = tpl
 
 	file = filepath.ToSlash(filepath.Join(baseDir, "datenschutz.gohtml"))
 	tpl, err = template.New("datenschutz.gohtml").Funcs(funcs).ParseFS(templateFS, header, file)
@@ -215,8 +222,9 @@ func (s *Server) ListenAndServe(cert, key string) error {
 	router.HandleFunc("/", s.collectionsHandler).Methods("GET")
 	router.HandleFunc("/news", s.newsHandler).Methods("GET")
 	router.HandleFunc("/impressum", s.impressumHandler).Methods("GET")
-	router.HandleFunc("/about", s.aboutHandler).Methods("GET")
+	router.HandleFunc("/information", s.informationHandler).Methods("GET")
 	router.HandleFunc("/datenschutz", s.datenschutzHandler).Methods("GET")
+	router.HandleFunc("/kontakt", s.kontaktHandler).Methods("GET")
 	router.HandleFunc("/detail/{collection}", s.collectionHandler).Methods("GET")
 
 	loggedRouter := handlers.CombinedLoggingHandler(s.accessLog, handlers.ProxyHeaders(router))

@@ -128,7 +128,7 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 		DetailParam:    "?" + detailValues.Encode(),
 		LinkHome:       "../",
 		LinkImpressum:  "../impressum",
-		LinkAbout:      "../about",
+		LinkAbout:      "../information",
 		LinkNews:       "",
 		LinkCollection: "../detail",
 	}); err != nil {

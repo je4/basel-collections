@@ -239,35 +239,20 @@
         </div>
     </div>
         <div id="content">
-            {{$data.KontaktContent | raw}}
-        <ul>
-            {{range $i := .Institutions}}
-                {{$loc := (index $data.Locations $i.Location) }}
-                <li class="news-box">
-                    <div style="margin-bottom: 15px;"><img src="https://cms.basel-collections.ch/assets/{{$i.Logo}}?width=240&height=80&fit=inside" class="img" alt="logo"></div>
-                    {{/*<div class="newstime">{{$n.GetDate}}</div> */}}
-                    <div class="impressumtitle">{{$i.Name}}</div>
-                    {{/* <div class="impressumtext">{{$i.Contact | raw}}</div> */}}
-                    <div class="impressumtext">{{$loc.Street | raw}}</div>
-                    <div class="impressumtext">{{$loc.Zip | raw}} {{$loc.City | raw}}</div>
-                    <div class="impressumtext" style="padding-bottom: 2em;"><a style="color: inherit;" href="{{$i.Url | raw}}">{{abbrev 30 (trimPrefix "https://" $i.Url) | raw}}</a></div>
-                </li>
-        {{end}}
-        </ul>
             {{$data.ImpressumContent | raw}}
     </div>
 
 
     <div id="content-large-impressum" class="type-impressum">
         <div class="text pos-middle">
-            <a class="link" href="impressum">Impressum</a> | <a class="link" href="datenschutz">Datenschutz</a> | <a class="link" href="about">Information</a><br />
+            <a class="link" href="impressum">Impressum</a> | <a class="link" href="datenschutz">Datenschutz</a> | <a class="link" href="kontakt">Kontakt</a><br />
             (c) 2021 Basel Collections
         </div>
     </div>
 
     <div id="content-small-impressum" class="type-impressum">
         <div class="text pos-middle">
-            <a class="link" href="impressum">Impressum</a> | <a class="link" href="datenschutz">Datenschutz</a> | <a class="link" href="about">Information</a><br />
+            <a class="link" href="impressum">Impressum</a> | <a class="link" href="datenschutz">Datenschutz</a> | <a class="link" href="kontakt">Kontakt</a><br />
             (c) 2021 Basel Collections
         </div>
     </div>
