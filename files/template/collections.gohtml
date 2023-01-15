@@ -1,5 +1,5 @@
 {{ $data := . }}<!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Basel Collections</title>
@@ -29,8 +29,8 @@
                 top: 0;
                 left: 0;
                 visibility: hidden;
-                height: 0px;
-                width: 0px;
+                height: 0;
+                width: 0;
             }
         {{ end }}
             #content-large-impressum {
@@ -38,8 +38,8 @@
                 top: 0;
                 left: 0;
                 visibility: hidden;
-                height: 0px;
-                width: 0px;
+                height: 0;
+                width: 0;
             }
         }
         @media (min-width: 769px) {
@@ -63,8 +63,8 @@
                 top: 0;
                 left: 0;
                 visibility: hidden;
-                height: 0px;
-                width: 0px;
+                height: 0;
+                width: 0;
             }
         {{ end }}
             #content-small-impressum {
@@ -72,8 +72,8 @@
                 top: 0;
                 left: 0;
                 visibility: hidden;
-                height: 0px;
-                width: 0px;
+                height: 0;
+                width: 0;
             }
         }
     </style>
@@ -95,8 +95,8 @@
                 <div class="hamburger">
                     <svg class="hamburger-icon" style="visibility: visible;"
                          viewBox="0 0 140 140"
-                         y="0px"
-                         x="0px"
+                         y="0"
+                         x="0"
                          id="menu_closed"
                          version="1.1">
                         <defs
@@ -138,8 +138,8 @@
                 </div>
                 <div class="hamburger">
                     <svg class="hamburger-icon" style="visibility: hidden;" viewBox="0 0 140 140"
-                         y="0px"
-                         x="0px"
+                         y="0"
+                         x="0"
                          id="menu_open"
                          version="1.1">
                         <defs
@@ -243,13 +243,7 @@
         </div>
 
         {{ range $key, $box := .GridSmall }}
-            {{$found := false}}
-            {{if (ne $data.Tag 0)}}
-                {{range $x, $t := $box.Content.GetTagIDs}}
-                    {{if (eq $data.Tag $t)}}{{$found = true}}{{end}}
-                {{end}}
-            {{end}}
-            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}{{if not $found}} notfound{{end}}" {{ if eq $box.Type "news" }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
+            <a id="content-small-{{ $key }}" class="type-{{ $box.Type }}" {{ if eq $box.Type "news" }} href="news" {{ end }}{{ if ne $box.Content.GetId 0 }} href="detail/{{ $box.Content.GetId }}{{ $data.DetailParam }}" style="cursor: pointer;"{{ end }}>
                 <div class="text pos-{{ index $box.Scheme "vertical-align" }}">
                     {{ $box.Content.GetTitle }}
                 </div>

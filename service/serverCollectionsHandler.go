@@ -25,14 +25,14 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
+		_, _ = w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
 		return
 	}
 	institutions, err := s.dir.GetInstitutions()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
+		_, _ = w.Write([]byte(fmt.Sprintf("cannot get tags: %v", err)))
 		return
 	}
 
@@ -60,7 +60,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	var colls []*directus.Collection
+	//	var colls []*directus.Collection
 	/*
 		if institution > 0 {
 			colls, err = s.dir.GetCollectionsByInstitution(institution)
@@ -72,20 +72,46 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	*/
-	colls, err = s.dir.GetCollections()
+	colls, err := s.dir.GetCollections()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get collections: %v", err)))
+		_, _ = w.Write([]byte(fmt.Sprintf("cannot get collections: %v", err)))
 		return
 	}
+	var mobileColls = colls
+	if institution > 0 {
+		mobileColls, err = s.dir.GetCollectionsByInstitution(institution)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Header().Set("Content-type", "text/plain")
+			_, _ = w.Write([]byte(fmt.Sprintf("cannot get collections by institution: %v", err)))
+			return
+		}
+	} else {
+		if tag > 0 {
+			mobileColls, err = s.dir.GetCollectionsByTags([]int64{tag})
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Header().Set("Content-type", "text/plain")
+				_, _ = w.Write([]byte(fmt.Sprintf("cannot get collections by tag: %v", err)))
+				return
+			}
+		}
+	}
+
 	var contents = []Content{}
 	for _, c := range colls {
 		contents = append(contents, c)
 	}
 
+	var contentsSmall = []Content{}
+	for _, c := range mobileColls {
+		contentsSmall = append(contentsSmall, c)
+	}
+
 	gridLarge, lastRowLarge := buildGrid(GRIDLARGE, contents)
-	gridSmall, lastRowSmall := buildGrid(GRIDSMALL, contents)
+	gridSmall, lastRowSmall := buildGrid(GRIDSMALL, contentsSmall)
 
 	impressumLarge := &Impressum{
 		Id: 0, Left: 1, Cols: 12, Top: lastRowLarge, Rows: 3,
@@ -103,7 +129,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if s.templateReload {
-		s.InitTemplates()
+		_ = s.InitTemplates()
 	}
 
 	s.templateMutex.RLock()
@@ -116,6 +142,7 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		Tags                           []*directus.Tag
 		Institutions                   []*directus.Institution
 		Collections                    []*directus.Collection
+		MobileCollections              []*directus.Collection
 		Institution                    int64
 		Tag                            int64
 		Selected                       string
@@ -126,26 +153,27 @@ func (s *Server) collectionsHandler(w http.ResponseWriter, req *http.Request) {
 		LinkAbout                      string
 		LinkCollection                 string
 	}{
-		GridLarge:      gridLarge,
-		GridSmall:      gridSmall,
-		ImpressumLarge: impressumLarge,
-		ImpressumSmall: impressumSmall,
-		Collections:    colls,
-		Tags:           tags,
-		Institutions:   institutions,
-		Tag:            tag,
-		Institution:    institution,
-		Selected:       selected,
-		DetailParam:    "?" + detailValues.Encode(),
-		LinkHome:       "",
-		LinkImpressum:  "impressum",
-		LinkAbout:      "about",
-		LinkNews:       "news",
-		LinkCollection: "detail",
+		GridLarge:         gridLarge,
+		GridSmall:         gridSmall,
+		ImpressumLarge:    impressumLarge,
+		ImpressumSmall:    impressumSmall,
+		Collections:       colls,
+		MobileCollections: mobileColls,
+		Tags:              tags,
+		Institutions:      institutions,
+		Tag:               tag,
+		Institution:       institution,
+		Selected:          selected,
+		DetailParam:       "?" + detailValues.Encode(),
+		LinkHome:          "",
+		LinkImpressum:     "impressum",
+		LinkAbout:         "about",
+		LinkNews:          "news",
+		LinkCollection:    "detail",
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("error executing template %s : %v", "root", err)))
+		_, _ = w.Write([]byte(fmt.Sprintf("error executing template %s : %v", "root", err)))
 		return
 	}
 }
