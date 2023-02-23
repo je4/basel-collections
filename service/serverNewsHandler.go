@@ -29,7 +29,10 @@ func (s *Server) newsHandler(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("cannot get collections: %v", err)))
+		s.log.Errorf("cannot load news: %v", err)
+		s.log.Debugf("%v%+v", err, GetErrorStacktrace(err))
+
+		w.Write([]byte(fmt.Sprintf("cannot get news: %v", err)))
 		return
 	}
 	var contents = []Content{}

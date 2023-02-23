@@ -172,13 +172,17 @@ func (d *Directus) loadNews() error {
 		for _, news := range news.Data {
 			news.dir = d
 			if news.start, err = time.Parse("2006-01-02", news.Start); err != nil {
-				return errors.Wrapf(err, "cannot parse start time - %s", news.Start)
+				//news.start = time.Time{}
+				continue
+				// return errors.Wrapf(err, "cannot parse start time - %s", news.Start)
 			}
 			if news.end, err = time.Parse("2006-01-02", news.End); err != nil {
-				return errors.Wrapf(err, "cannot parse end time - %s", news.End)
+				continue
+				//return errors.Wrapf(err, "cannot parse end time - %s", news.End)
 			}
 			if news.publishDate, err = time.Parse("2006-01-02", news.PublishDate); err != nil {
-				return errors.Wrapf(err, "cannot parse publishDate time - %s", news.PublishDate)
+				continue
+				//return errors.Wrapf(err, "cannot parse publishDate time - %s", news.PublishDate)
 			}
 			d.news = append(d.news, news)
 		}
