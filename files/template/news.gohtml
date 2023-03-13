@@ -245,13 +245,23 @@
             <li class="news-box">
                 {{if (ne $n.Type.Type "")}}<div class="newstext" style="font-size: smaller;">{{$n.Type.Type}}</div>{{end}}
                 <div class="newstime">{{$n.GetDate}}</div>
-                <div class="newstitle">{{$n.Title}}</div>
+                <div class="newstext">
+                    {{$inst.Name}}
+                </div>
+
+                <div class="newstitle">
+                    {{if (ne $n.Url "")}}<a href="{{$n.Url | raw}}">{{end}}{{$n.Title}}{{if (ne $n.Url "")}}</a>{{end}}
+                </div>
+                <!--
                 {{if (ne $n.Url "")}}<div class="newstext"><a href="{{$n.Url | raw}}">Link</a></div>{{end}}
-                <div class="newstext">{{$n.Text | raw}}</div>
+                -->
+                <div class="newstext" style="margin-bottom: 60px;">{{$n.Text | raw}}</div>
+                <!--
                 <div class="newstext" style="font-size:12px; text-align: right;">
                     <img src="https://cms.basel-collections.ch/assets/{{$inst.LogoSmall}}?width=32&height=32&fit=inside" class="img" alt="logo small">
                     {{$inst.Name}}
                 </div>
+                -->
             </li>
             {{end}}
         </ul>

@@ -57,6 +57,10 @@ body {
   background-color: $dark;
 }
 
+.type-news.notfound {
+  filter: invert(1);
+}
+
 .type-impressum-page {
   /* border: 1px solid blue; */
   position: relative;
@@ -106,14 +110,6 @@ body {
 .pos-bottom {
   position: absolute;
   bottom: 0;
-}
-
-.hamburger {
-  position: absolute;
-  top: 0;
-  right: 0px;
-  margin-right: 5px;
-  transform: scale(-1, 1);
 }
 
 #hamburger-content {
@@ -221,6 +217,7 @@ a.link:hover {
   background-color: $menu-1-background;
   z-index: 50;
   visibility: hidden;
+
 
   div.filter-entry {
     a:hover {
@@ -333,8 +330,19 @@ a.link:hover {
 .newstitle {
   color: black; //black
   font-weight: bold;
-  margin-bottom: 4px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: darkgray;
+  margin-bottom: 8px;
 }
+
+.newstitle a {
+  color: black;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: darkgray;
+}
+
 .newstext {
   color: $dark;
 }

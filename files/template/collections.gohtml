@@ -212,7 +212,7 @@
 
         {{template "header_content" . }}
         <div id="menu-3" class="cell box3">
-            <div class="">{{if (ne $data.Selected "")}}{{$data.Selected}}<!-- [{{len $data.MobileCollections}}]-->{{end}}</div>
+            {{if (ne $data.Selected "")}}{{$data.Selected}}<!-- [{{len $data.MobileCollections}}]-->{{end}}
         </div>
         <div id="menu-4" class="cell box1"></div>
 

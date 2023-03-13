@@ -69,7 +69,7 @@ var GRIDSMALL = []Grid{
 	{Id: 0, Left: 4, Cols: 5, Top: 8, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom},  // 1
 	{Id: 0, Left: 4, Cols: 5, Top: 9, Rows: 4, Type: BoxCell, Scheme: SCHEMES[1], VAlign: bottom},   // 1
 	{Id: 0, Left: 1, Cols: 3, Top: 12, Rows: 1, Type: BoxBlank, Scheme: SCHEMES[3], VAlign: bottom}, // 1
-	{Id: 0, Left: 1, Cols: 5, Top: 13, Rows: 4, Type: BoxCell, Scheme: SCHEMES[4], VAlign: bottom},  // 1
+	{Id: 0, Left: 1, Cols: 5, Top: 13, Rows: 4, Type: BoxCell, Scheme: SCHEMES[6], VAlign: bottom},  // 1
 	{Id: 0, Left: 6, Cols: 3, Top: 13, Rows: 4, Type: BoxCell, Scheme: SCHEMES[2], VAlign: bottom},  // 1
 }
 
