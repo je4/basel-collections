@@ -2,6 +2,7 @@ package directus
 
 import (
 	"bytes"
+	"cmp"
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
@@ -64,8 +65,8 @@ func (d *Directus) loadTags() error {
 			d.tags = append(d.tags, tag)
 		}
 		d.lastAccess = time.Now()
-		slices.SortFunc(d.tags, func(a, b *Tag) bool {
-			return a.Tag < b.Tag
+		slices.SortFunc(d.tags, func(a, b *Tag) int {
+			return cmp.Compare(a.Tag, b.Tag)
 		})
 	}
 	return nil
