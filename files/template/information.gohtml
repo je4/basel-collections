@@ -248,8 +248,10 @@
                     {{/*<div class="newstime">{{$n.GetDate}}</div> */}}
                     <div class="impressumtitle">{{$i.Name}}</div>
                     {{/* <div class="impressumtext">{{$i.Contact | raw}}</div> */}}
+                    {{if $loc}}
                     <div class="impressumtext">{{$loc.Street | raw}}</div>
                     <div class="impressumtext">{{$loc.Zip | raw}} {{$loc.City | raw}}</div>
+                    {{end}}
                     <div class="impressumtext" style="padding-bottom: 2em;"><a style="color: inherit;" href="{{$i.Url | raw}}">{{abbrev 30 (trimPrefix "https://" $i.Url) | raw}}</a></div>
                 </li>
         {{end}}
