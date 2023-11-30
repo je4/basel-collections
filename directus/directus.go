@@ -14,6 +14,7 @@ type Directus struct {
 	locations    []*Location
 	news         []*News
 	pages        []*Page
+	catalogues   []*Catalogue
 	mutex        sync.Mutex
 	lastAccess   time.Time
 	cacheTime    time.Duration
@@ -42,4 +43,6 @@ func (d *Directus) clearCache() {
 	d.news = nil
 	d.institutions = nil
 	d.pages = nil
+	d.locations = nil
+	d.catalogues = nil
 }

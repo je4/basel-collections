@@ -11,20 +11,20 @@ require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/bluele/gcache v0.0.2
 	github.com/go-sql-driver/mysql v1.7.1
-	github.com/gorilla/handlers v1.5.1
-	github.com/gorilla/mux v1.8.0
-	github.com/je4/utils/v2 v2.0.7
+	github.com/gorilla/handlers v1.5.2
+	github.com/gorilla/mux v1.8.1
+	github.com/je4/utils/v2 v2.0.17
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/pkg/errors v0.9.1
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
+	golang.org/x/exp v0.0.0-20231127185646-65229373498e
 )
 
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/blend/go-sdk v1.20220411.3 // indirect
-	github.com/felixge/httpsnoop v1.0.3 // indirect
-	github.com/google/uuid v1.3.1 // indirect
+	github.com/felixge/httpsnoop v1.0.4 // indirect
+	github.com/google/uuid v1.4.0 // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/kr/fs v0.1.0 // indirect
@@ -34,6 +34,6 @@ require (
 	github.com/pkg/sftp v1.13.6 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/crypto v0.16.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
 )

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -51,7 +51,7 @@ func (d *Directus) loadLocations() error {
 		if err != nil {
 			return errors.Wrapf(err, "error executing %s", urlStr)
 		}
-		data, err := ioutil.ReadAll(resp.Body)
+		data, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return errors.Wrapf(err, "cannot read result of %s", urlStr)
 		}
