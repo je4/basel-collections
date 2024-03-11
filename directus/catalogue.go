@@ -17,6 +17,7 @@ type CatalogueCollection struct {
 	Description string `json:"description"`
 	Image       string `json:"image"`
 	Url         string `json:"url"`
+	Identifier  string `json:"identifier,omitempty"`
 }
 
 type Catalogue struct {

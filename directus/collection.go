@@ -31,6 +31,7 @@ type Collection struct {
 	Url         string          `json:"url,omitempty"`
 	Hinweis     string          `json:"hinweis,omitempty"`
 	Tags        []CollectionTag `json:"tags,omitempty"`
+	Identifier  string          `json:"identifier,omitempty"`
 }
 
 func (c *Collection) GetTagIDs() []int64 {
